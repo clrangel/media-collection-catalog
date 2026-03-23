@@ -45,7 +45,20 @@ A modelagem utiliza herança para promover reutilização de código e melhor or
 - Lombok
 - OpenAPI (Swagger)
 
+## 🗄️ Configuração do Banco de Dados
 
+Para executar o projeto, é necessário ter um banco PostgreSQL configurado.
+
+Atualize as propriedades no arquivo `application.properties` com suas credenciais:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/collection_catalog_db
+spring.datasource.username=SEU_LOGIN
+spring.datasource.password=SUA_SENHA
+```
+> ⚠️ Observação:
+> A propriedade `spring.jpa.hibernate.ddl-auto` está comentada para evitar falhas na inicialização, já que o banco ainda não possui estrutura definida e será versionado futuramente com Flyway.
+---
 ## 🚀 Como executar o projeto
 
 ```bash
@@ -62,3 +75,4 @@ cd media-collection-catalog
 
 # Windows
 mvnw.cmd spring-boot:run
+```
