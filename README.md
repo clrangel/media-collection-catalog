@@ -14,7 +14,7 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 
 - Modelagem de domínio
 - Relacionamentos entre entidades
-- Arquitetura em camadas
+- Arquitetura orientada a domínio (DDD)
 - Boas práticas com Spring Boot
 
 ## 🧠 Domínio da aplicação
@@ -25,6 +25,30 @@ O sistema é dividido em dois principais domínios:
 - 🎬 Mídias de Vídeo (DVD, Blu-ray)
 
 A modelagem utiliza herança para promover reutilização de código e melhor organização das entidades.
+
+## 🧱 Estrutura do Projeto
+
+O projeto está sendo desenvolvido seguindo o padrão **DDD (Domain-Driven Design)** com organização por domínio.
+
+Atualmente, o domínio de mídias musicais possui as seguintes entidades:
+
+- **Midia** (classe base abstrata)
+- **MidiaMusical** (especialização para músicas)
+- **Artista** (relacionamento 1:N com mídias musicais)
+- **Faixa** (entidade dependente de MidiaMusical)
+
+### 🎵 Enums
+
+- **GeneroMusical** → representa os estilos musicais
+- **CategoriaDisco** → classifica o tipo de mídia (álbum, EP, etc.)
+
+### 📦 Organização
+
+A estrutura segue o modelo *package by feature*:
+
+    br.com.catalogo.mediacollectioncatalog
+    ├── midia
+    ├── artista
 
 ## 🏗️ Tecnologias utilizadas
 
