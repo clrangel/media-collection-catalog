@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia;
 
 import br.com.catalogo.mediacollectioncatalog.artista.Artista;
 import br.com.catalogo.mediacollectioncatalog.midia.enums.CategoriaDisco;
+import br.com.catalogo.mediacollectioncatalog.midia.enums.GeneroMusical;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
