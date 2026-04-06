@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.midia;
 
+import br.com.catalogo.mediacollectioncatalog.artista.Artista;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -14,6 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+
+// Evita loop infinito no toString devido a relacionamento bidirecional
+@ToString(exclude = {"artista", "faixas"})
 public abstract class MidiaMusical extends Midia{
 
     @Enumerated(EnumType.STRING)
