@@ -35,5 +35,6 @@ public abstract class MidiaMusical extends Midia{
     private Artista artista;
 
     @OneToMany(mappedBy = "midiaMusical", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("numero ASC")
     private List<Faixa> faixas = new ArrayList<>();
 }
