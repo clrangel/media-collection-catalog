@@ -1,8 +1,9 @@
-package br.com.catalogo.mediacollectioncatalog.midia;
+package br.com.catalogo.mediacollectioncatalog.midia.musical.domain;
 
-import br.com.catalogo.mediacollectioncatalog.artista.Artista;
-import br.com.catalogo.mediacollectioncatalog.midia.enums.CategoriaDisco;
-import br.com.catalogo.mediacollectioncatalog.midia.enums.GeneroMusical;
+import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
+import br.com.catalogo.mediacollectioncatalog.midia.Midia;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.enums.CategoriaDisco;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.enums.GeneroMusical;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -20,7 +21,7 @@ import java.util.List;
 
 // Evita loop infinito no toString devido a relacionamento bidirecional
 @ToString(exclude = {"artista", "faixas"})
-public abstract class MidiaMusical extends Midia{
+public abstract class MidiaMusical extends Midia {
 
     @Enumerated(EnumType.STRING)
     private GeneroMusical genero;

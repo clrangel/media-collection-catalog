@@ -1,4 +1,4 @@
-package br.com.catalogo.mediacollectioncatalog.midia;
+package br.com.catalogo.mediacollectioncatalog.midia.musical.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

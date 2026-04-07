@@ -1,12 +1,12 @@
-package br.com.catalogo.mediacollectioncatalog.artista;
+package br.com.catalogo.mediacollectioncatalog.artista.domain;
 
-import br.com.catalogo.mediacollectioncatalog.midia.MidiaMusical;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import jakarta.persistence.*;
-        import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity

@@ -1,4 +1,4 @@
-package br.com.catalogo.mediacollectioncatalog.midia.enums;
+package br.com.catalogo.mediacollectioncatalog.midia.musical.enums;
 
 public enum CategoriaDisco {
 
