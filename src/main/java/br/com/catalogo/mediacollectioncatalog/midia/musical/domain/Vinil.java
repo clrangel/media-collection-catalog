@@ -1,19 +1,18 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.domain;
 
 import br.com.catalogo.mediacollectioncatalog.midia.musical.enums.FormatoDisco;
-import br.com.catalogo.mediacollectioncatalog.midia.musical.enums.TipoCD;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
-@Table(name = "cds")
+@Table(name = "vinis")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class CD extends MidiaMusical{
+public class Vinil extends MidiaMusical{
 
     @NotNull
     @Column(nullable = false)
@@ -25,5 +24,5 @@ public class CD extends MidiaMusical{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TipoCD tipoCD;
+    private TipoVinil tipoVinil;
 }
