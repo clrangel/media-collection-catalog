@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.domain;
 
+import br.com.catalogo.mediacollectioncatalog.midia.musical.enums.FormatoDisco;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
