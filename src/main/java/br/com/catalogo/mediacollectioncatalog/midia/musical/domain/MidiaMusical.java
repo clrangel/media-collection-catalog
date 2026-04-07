@@ -24,16 +24,18 @@ import java.util.List;
 public abstract class MidiaMusical extends Midia {
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private GeneroMusical genero;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CategoriaDisco categoria;
 
     @Size(max = 250)
     @Column(nullable = false, length = 250)
     private String descricao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artista_id", nullable = false)
     private Artista artista;
 
