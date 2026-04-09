@@ -2,6 +2,8 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.domain;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.midia.Midia;
+import br.com.catalogo.mediacollectioncatalog.midia.video.domain.enums.CategoriaVideo;
+import br.com.catalogo.mediacollectioncatalog.midia.video.domain.enums.GeneroFilme;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
