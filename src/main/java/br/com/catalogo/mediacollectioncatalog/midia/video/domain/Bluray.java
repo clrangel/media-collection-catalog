@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.midia.video.domain;
 
+import br.com.catalogo.mediacollectioncatalog.midia.video.enums.Resolucao;
 import br.com.catalogo.mediacollectioncatalog.midia.video.enums.TipoEdicao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
