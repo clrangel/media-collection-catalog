@@ -30,25 +30,64 @@ A modelagem utiliza herança para promover reutilização de código e melhor or
 
 O projeto está sendo desenvolvido seguindo o padrão **DDD (Domain-Driven Design)** com organização por domínio.
 
-Atualmente, o domínio de mídias musicais possui as seguintes entidades:
+Atualmente, o sistema já contempla dois domínios principais: Música e Filme
 
-- **Midia** (classe base abstrata)
-- **MidiaMusical** (especialização para músicas)
-- **Artista** (relacionamento 1:N com mídias musicais)
+##### 💿 Midia (classe base abstrata que representa qualquer tipo de mídia)
+
+---
+### 🎵 Domínio de Mídias Musicais
+- **MidiaMusical** (especialização de Midia para música)
+- **Artista** (relacionamento 1 com mídias musicais)
 - **Faixa** (entidade dependente de MidiaMusical)
 
-### 🎵 Enums
+##### 🎧 Especializações
+- CD
+- Vinil
+- K7
 
+##### 🎵 Enums
 - **GeneroMusical** → representa os estilos musicais
 - **CategoriaDisco** → classifica o tipo de mídia (álbum, EP, etc.)
+- **FormatoDisco** → representa o formado do CD (simples, duplo, box, etc.)
+- **TipoVinil** → representa caracterista física do nivil (preto, colorido, picture, etc.)
+- **TipoCD** → representa caracterista física da caixa do CD (jewel case, digipack, slipcase, etc.)
+---
+
+### 🎬 Domínio de Mídias de Vídeo
+- **MidiaVideo** (especialização de Midia)
+- **Diretor** (relacionamento N com mídias de vídeo)
+
+##### 🎬 Especializações
+- DVD
+- Bluray
+
+##### 🎬 Enums
+- **GeneroFilme** → representa os gêneros cinematográficos
+- **CategoriaVideo** → classifica o tipo de conteúdo (filme, série, etc.)
+- **TipoEdicao** → simples, duplo ou box
+- **Resolucao** → HD, Full HD, 4K, 8K (aplicado a Blu-ray)
+
 
 ### 📦 Organização
 
-A estrutura segue o modelo *package by feature*:
+A estrutura segue o modelo *package by feature*, separando claramente os domínios de mídia musical e vídeo, além das entidades relacionadas:
 
-    br.com.catalogo.mediacollectioncatalog
-    ├── midia
-    ├── artista
+```
+br.com.catalogo.mediacollectioncatalog
+├── midia
+│   ├── domain                // classe base Midia
+│   ├── musical
+│   │   ├── domain            // MidiaMusical, CD, Vinil, K7
+│   │   └── enums             // GeneroMusical, CategoriaDisco, FormatoDisco, TipoVinil, TipoCD
+│   └── video
+│       ├── domain            // MidiaVideo, DVD, Bluray
+│       └── enums             // GeneroFilme, CategoriaVideo, TipoEdicao, Resolucao
+├── artista
+│   └── domain                // entidade Artista
+└── diretor
+    └── domain                // entidade Diretor
+```
+
 
 ## 🏗️ Tecnologias utilizadas
 
