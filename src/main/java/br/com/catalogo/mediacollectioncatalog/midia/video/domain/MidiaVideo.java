@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.midia.video.domain;
 
+import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.midia.Midia;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
