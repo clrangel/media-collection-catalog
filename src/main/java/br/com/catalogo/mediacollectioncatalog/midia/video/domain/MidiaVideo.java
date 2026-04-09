@@ -46,7 +46,12 @@ public class MidiaVideo extends Midia {
     @Column(length = 30)
     private String paisFilme;
 
-    @ManyToMany(mappedBy = "midiasVideos", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "midias_videos_diretores",
+            joinColumns = @JoinColumn(name = "midia_video_id"),
+            inverseJoinColumns = @JoinColumn(name = "diretor_id")
+    )
     private List<Diretor> diretores = new ArrayList<>();
 
 }
