@@ -1,4 +1,4 @@
-package br.com.catalogo.mediacollectioncatalog.midia.video.domain.enums;
+package br.com.catalogo.mediacollectioncatalog.midia.video.enums;
 
 public enum GeneroFilme {
 
