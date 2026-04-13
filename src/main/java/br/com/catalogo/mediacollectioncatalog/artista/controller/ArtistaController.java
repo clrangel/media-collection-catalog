@@ -3,6 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.artista.controller;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.service.ArtistaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ArtistaController {
     private final ArtistaService service;
 
     @PostMapping
-    public ResponseEntity<ArtistaResponseDTO> cadastrarArtista(@RequestBody ArtistaRequestDTO dto){
+    public ResponseEntity<ArtistaResponseDTO> cadastrarArtista(@Valid @RequestBody ArtistaRequestDTO dto){
         ArtistaResponseDTO artistaCriado = service.cadastrarArtista(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(artistaCriado);
     }
