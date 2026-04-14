@@ -12,5 +12,7 @@ public record CDResponseDTO(
 
         Integer numeroDiscos,
         String formatoDisco,
-        String tipoCD
+        String tipoCD,
+
+        String tipoMidia
 ) {}
