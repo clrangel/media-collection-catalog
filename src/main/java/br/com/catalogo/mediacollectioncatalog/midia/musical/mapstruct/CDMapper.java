@@ -5,22 +5,32 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestD
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface CDMapper {
 
-    @Mapping(target = "genero", expression = "java(GeneroMusical.valueOf(dto.genero()))")
-    @Mapping(target = "categoria", expression = "java(CategoriaDisco.valueOf(dto.categoria()))")
-    @Mapping(target = "formatoDisco", expression = "java(FormatoDisco.valueOf(dto.formatoDisco()))")
-    @Mapping(target = "tipoCD", expression = "java(TipoCD.valueOf(dto.tipoCD()))")
+    // Converte do DTO de requisição para a entidade
+    // Mapeia cada campo do DTO para a entidade
+    @Mapping(source = "genero", target = "genero")
+    @Mapping(source = "categoria", target = "categoria")
+    @Mapping(source = "formatoDisco", target = "formatoDisco")
+    @Mapping(source = "tipoCD", target = "tipoCD")
     CD toEntity(CDRequestDTO dto);
 
-    @Mapping(target = "artistaId", source = "artista.id")
-    @Mapping(target = "genero", expression = "java(cd.getGenero().name())")
-    @Mapping(target = "categoria", expression = "java(cd.getCategoria().name())")
-    @Mapping(target = "formatoDisco", expression = "java(cd.getFormatoDisco().name())")
-    @Mapping(target = "tipoCD", expression = "java(cd.getTipoCD().name())")
-    @Mapping(target = "tipoMidia",
-            expression = "java(cd.getClass().getSimpleName())")
+    // Converte da entidade para o DTO de resposta
+    // Mapeia da entidade para o DTO de resposta
+    @Mapping(source = "artista.id", target = "artistaId")
+    @Mapping(source = "genero", target = "genero")
+    @Mapping(source = "categoria", target = "categoria")
+    @Mapping(source = "formatoDisco", target = "formatoDisco")
+    @Mapping(source = "tipoCD", target = "tipoCD")
+    //@Mapping(target = "tipoMidia", expression = "java(cd.getClass().getSimpleName())")
+    @Mapping(target = "tipoMidia", source = ".", qualifiedByName = "mapTipoMidia")
     CDResponseDTO toDTO(CD cd);
+
+    @Named("mapTipoMidia")
+    default String mapTipoMidia(CD cd) {
+        return "CD";
+    }
 }

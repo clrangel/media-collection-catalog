@@ -24,6 +24,6 @@ public class CD extends MidiaMusical{
     private FormatoDisco formatoDisco;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "tipo_cd", nullable = false)
     private TipoCD tipoCD;
 }
