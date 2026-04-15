@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CDMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "artista", ignore = true)
     @Mapping(target = "genero", expression = "java(GeneroMusical.valueOf(dto.genero()))")
     @Mapping(target = "categoria", expression = "java(CategoriaDisco.valueOf(dto.categoria()))")
     @Mapping(target = "formatoDisco", expression = "java(FormatoDisco.valueOf(dto.formatoDisco()))")
