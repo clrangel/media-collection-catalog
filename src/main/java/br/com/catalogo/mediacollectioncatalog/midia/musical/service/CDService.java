@@ -36,4 +36,11 @@ public class CDService {
         // 5. Converter para DTO
         return mapper.toDTO(cdSalvo);
     }
+
+    public void deletarCD(Long id){
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("CD não encontrado");
+        }
+        repository.deleteById(id);
+    }
 }

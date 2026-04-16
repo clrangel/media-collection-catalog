@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,5 +20,11 @@ public class CDController {
     public ResponseEntity<CDResponseDTO> cadastrarCD(@Valid @RequestBody CDRequestDTO dto){
         CDResponseDTO cdCriado = service.cadastrarCD(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(cdCriado);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletarCD(@PathVariable Long id){
+        service.deletarCD(id);
+        return ResponseEntity.noContent().build();
     }
 }
