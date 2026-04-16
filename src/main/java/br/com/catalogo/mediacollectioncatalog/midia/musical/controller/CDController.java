@@ -27,4 +27,13 @@ public class CDController {
         service.deletarCD(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CDResponseDTO> atualizarCD(
+            @PathVariable Long id,
+            @Valid @RequestBody CDRequestDTO dto) {
+
+        CDResponseDTO atualizado = service.atualizarCD(id, dto);
+        return ResponseEntity.ok(atualizado);
+    }
 }

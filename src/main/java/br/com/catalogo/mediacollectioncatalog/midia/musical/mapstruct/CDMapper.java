@@ -3,9 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface CDMapper {
@@ -33,4 +31,8 @@ public interface CDMapper {
     default String mapTipoMidia(CD cd) {
         return "CD";
     }
+
+    // Atualiza um CD existente com dados do DTO
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateFromDto(CDRequestDTO dto, @MappingTarget CD entity);
 }
