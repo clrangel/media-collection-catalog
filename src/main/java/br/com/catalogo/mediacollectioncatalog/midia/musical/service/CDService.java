@@ -3,6 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
@@ -10,6 +11,8 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.MusicalRe
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -75,5 +78,14 @@ public class CDService {
                 .orElseThrow(() -> new RuntimeException("CD não encontrado com o ID: " + id));
 
         return mapper.toDTO(cd);
+    }
+
+    public List<CDResponseDTO> listarTodosCDs() {
+        List<MidiaMusical> midias = repository.findAll();
+
+        return midias.stream()
+                .map(midia -> (CD) midia)
+                .map(mapper::toDTO)
+                .toList();
     }
 }

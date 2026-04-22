@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/cds")
@@ -41,5 +43,11 @@ public class CDController {
     public ResponseEntity<CDResponseDTO> buscarCDPorId(@PathVariable Long id) {
         CDResponseDTO cd = service.buscarCDPorId(id);
         return ResponseEntity.ok(cd);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CDResponseDTO>> listarTodosCDs() {
+        List<CDResponseDTO> cds = service.listarTodosCDs();
+        return ResponseEntity.ok(cds);
     }
 }

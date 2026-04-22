@@ -5,6 +5,8 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestD
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface CDMapper {
 
@@ -35,4 +37,7 @@ public interface CDMapper {
     // Atualiza um CD existente com dados do DTO
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(CDRequestDTO dto, @MappingTarget CD entity);
+
+    // MapStruct gera a implementação automaticamente
+    List<CDResponseDTO> toDTOList(List<CD> cds);
 }
