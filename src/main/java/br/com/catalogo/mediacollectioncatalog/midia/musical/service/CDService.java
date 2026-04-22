@@ -3,7 +3,6 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
-import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
@@ -68,5 +67,13 @@ public class CDService {
 
         // 5. Retorna o DTO de resposta
         return mapper.toDTO(cdSalvo);
+    }
+
+    public CDResponseDTO buscarCDPorId(Long id) {
+
+        CD cd = (CD) repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("CD não encontrado com o ID: " + id));
+
+        return mapper.toDTO(cd);
     }
 }

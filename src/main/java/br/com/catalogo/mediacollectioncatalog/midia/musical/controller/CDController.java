@@ -36,4 +36,10 @@ public class CDController {
         CDResponseDTO atualizado = service.atualizarCD(id, dto);
         return ResponseEntity.ok(atualizado);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CDResponseDTO> buscarCDPorId(@PathVariable Long id) {
+        CDResponseDTO cd = service.buscarCDPorId(id);
+        return ResponseEntity.ok(cd);
+    }
 }
