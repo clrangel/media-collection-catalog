@@ -3,11 +3,10 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
-import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
-import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.MusicalRepository;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.CDRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.List;
 @Service
 public class CDService {
 
-    private final MusicalRepository repository;
+    private final CDRepository repository;
     private final ArtistaRepository artistaRepository;
     private final CDMapper mapper;
 
@@ -52,7 +51,7 @@ public class CDService {
     public CDResponseDTO atualizarCD(Long id, CDRequestDTO dto) {
 
         // 1. Busca o CD existente no banco
-        CD cd = (CD) repository.findById(id)
+        CD cd = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CD não encontrado"));
 
         // 2. Atualiza apenas os campos vindos do DTO
@@ -74,18 +73,15 @@ public class CDService {
 
     public CDResponseDTO buscarCDPorId(Long id) {
 
-        CD cd = (CD) repository.findById(id)
+        CD cd = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CD não encontrado com o ID: " + id));
 
         return mapper.toDTO(cd);
     }
 
     public List<CDResponseDTO> listarTodosCDs() {
-        List<MidiaMusical> midias = repository.findAll();
+        List<CD> cds = repository.findAll();
 
-        return midias.stream()
-                .map(midia -> (CD) midia)
-                .map(mapper::toDTO)
-                .toList();
+        return mapper.toDTOList(cds);
     }
 }
