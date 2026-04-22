@@ -9,7 +9,9 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.CDRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,7 +30,10 @@ public class CDService {
 
         // 2. Buscar artista
         Artista artista = artistaRepository.findById(dto.artistaId())
-                .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Artista não encontrado com o ID: " + dto.artistaId()
+                ));
 
         // 3. Setar artista
         cd.setArtista(artista);
@@ -42,7 +47,9 @@ public class CDService {
 
     public void deletarCD(Long id){
         if (!repository.existsById(id)) {
-            throw new RuntimeException("CD não encontrado");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
+            );
         }
         repository.deleteById(id);
     }
@@ -52,7 +59,9 @@ public class CDService {
 
         // 1. Busca o CD existente no banco
         CD cd = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("CD não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
+                ));
 
         // 2. Atualiza apenas os campos vindos do DTO
         // Não recria o objeto, apenas modifica o existente
@@ -60,7 +69,9 @@ public class CDService {
 
         // 3. Atualiza o artista manualmente (mapper ignora esse campo)
         Artista artista = artistaRepository.findById(dto.artistaId())
-                .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
+                ));
 
         cd.setArtista(artista);
 
@@ -74,7 +85,9 @@ public class CDService {
     public CDResponseDTO buscarCDPorId(Long id) {
 
         CD cd = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("CD não encontrado com o ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
+                ));
 
         return mapper.toDTO(cd);
     }
