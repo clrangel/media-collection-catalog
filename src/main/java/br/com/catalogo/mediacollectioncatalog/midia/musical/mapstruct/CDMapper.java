@@ -25,6 +25,7 @@ public interface CDMapper {
     @Mapping(source = "categoria", target = "categoria")
     @Mapping(source = "formatoDisco", target = "formatoDisco")
     @Mapping(source = "tipoCD", target = "tipoCD")
+    @Mapping(source = "artista.nome", target = "nomeArtista")
     //@Mapping(target = "tipoMidia", expression = "java(cd.getClass().getSimpleName())")
     @Mapping(target = "tipoMidia", source = ".", qualifiedByName = "mapTipoMidia")
     CDResponseDTO toDTO(CD cd);

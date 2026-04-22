@@ -84,7 +84,7 @@ public class CDService {
 
     public CDResponseDTO buscarCDPorId(Long id) {
 
-        CD cd = repository.findById(id)
+        CD cd = repository.findByIdWithArtista(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
                 ));
@@ -93,7 +93,7 @@ public class CDService {
     }
 
     public List<CDResponseDTO> listarTodosCDs() {
-        List<CD> cds = repository.findAll();
+        List<CD> cds = repository.findAllWithArtista();
 
         return mapper.toDTOList(cds);
     }

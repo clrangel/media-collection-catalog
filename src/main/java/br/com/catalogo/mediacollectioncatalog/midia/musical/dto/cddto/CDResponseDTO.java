@@ -3,6 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto;
 public record CDResponseDTO(
 
         Long id,
+        String nomeArtista,
         String titulo,
         Integer anoLancamento,
         String genero,
