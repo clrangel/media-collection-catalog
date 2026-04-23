@@ -20,13 +20,18 @@ public interface CDMapper {
 
     // Converte da entidade para o DTO de resposta
     // Mapeia da entidade para o DTO de resposta
+
+    // Extrai o ID do objeto Artista para um campo simples no DTO
     @Mapping(source = "artista.id", target = "artistaId")
     @Mapping(source = "genero", target = "genero")
     @Mapping(source = "categoria", target = "categoria")
     @Mapping(source = "formatoDisco", target = "formatoDisco")
     @Mapping(source = "tipoCD", target = "tipoCD")
+
+    // Extrai o nome do objeto Artista para um campo simples no DTO
     @Mapping(source = "artista.nome", target = "nomeArtista")
-    //@Mapping(target = "tipoMidia", expression = "java(cd.getClass().getSimpleName())")
+
+    // Converte a entidade em uma representação textual do tipo de mídia (ex: CD)
     @Mapping(target = "tipoMidia", source = ".", qualifiedByName = "mapTipoMidia")
     CDResponseDTO toDTO(CD cd);
 
