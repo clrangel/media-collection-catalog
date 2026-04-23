@@ -16,6 +16,19 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 - Relacionamentos entre entidades
 - Arquitetura orientada a domínio (DDD)
 - Boas práticas com Spring Boot
+- Mapeamento entre camadas com MapStruct
+
+## 🚀 Funcionalidades atuais
+
+✔️ CRUD completo de CDs  
+✔️ Cadastro de Artistas  
+✔️ Relacionamento entre CD e Artista  
+✔️ Conversão DTO ↔ Entity com MapStruct  
+✔️ Queries otimizadas com JOIN FETCH  
+✔️ Tratamento de erros com ResponseStatusException  
+✔️ Documentação interativa com Swagger (http://localhost:8080/swagger-ui.html)
+
+---
 
 ## 🧠 Domínio da aplicação
 
@@ -28,9 +41,20 @@ A modelagem utiliza herança para promover reutilização de código e melhor or
 
 ## 🧱 Estrutura do Projeto
 
-O projeto está sendo desenvolvido seguindo o padrão **DDD (Domain-Driven Design)** com organização por domínio.
+O projeto segue uma abordagem híbrida:
 
-Atualmente, o sistema já contempla dois domínios principais: Música e Filme
+👉 Organização por domínio + separação em camadas
+
+Exemplo (domínio musical):
+
+midia/musical/
+- controller
+- service
+- repository
+- domain
+- dto
+- mapstruct
+- enums
 
 ##### 💿 Midia (classe base abstrata que representa qualquer tipo de mídia)
 
@@ -48,9 +72,9 @@ Atualmente, o sistema já contempla dois domínios principais: Música e Filme
 ##### 🎵 Enums
 - **GeneroMusical** → representa os estilos musicais
 - **CategoriaDisco** → classifica o tipo de mídia (álbum, EP, etc.)
-- **FormatoDisco** → representa o formado do CD (simples, duplo, box, etc.)
-- **TipoVinil** → representa caracterista física do nivil (preto, colorido, picture, etc.)
-- **TipoCD** → representa caracterista física da caixa do CD (jewel case, digipack, slipcase, etc.)
+- **FormatoDisco** → representa o formato do CD (simples, duplo, box, etc.)
+- **TipoVinil** → representa característica física do vinil (preto, colorido, picture, etc.)
+- **TipoCD** → representa característica física da caixa do CD (jewel case, digipack, slipcase, etc.)
 ---
 
 ### 🎬 Domínio de Mídias de Vídeo
@@ -59,7 +83,7 @@ Atualmente, o sistema já contempla dois domínios principais: Música e Filme
 
 ##### 🎬 Especializações
 - DVD
-- Bluray
+- Blu-ray
 
 ##### 🎬 Enums
 - **GeneroFilme** → representa os gêneros cinematográficos
@@ -75,19 +99,27 @@ A estrutura segue o modelo *package by feature*, separando claramente os domíni
 ```
 br.com.catalogo.mediacollectioncatalog
 ├── midia
-│   ├── domain                // classe base Midia
+│   ├── domain                     // classe base Midia
 │   ├── musical
-│   │   ├── domain            // MidiaMusical, CD, Vinil, K7
-│   │   └── enums             // GeneroMusical, CategoriaDisco, FormatoDisco, TipoVinil, TipoCD
+│   │   ├── controller             // CDController
+│   │   ├── service                // CDService
+│   │   ├── repository             // CDRepository
+│   │   ├── domain                 // MidiaMusical, CD, Vinil, K7
+│   │   ├── dto                    // CDRequestDTO, CDResponseDTO
+│   │   ├── mapstruct              // CDMapper
+│   │   └── enums                  // GeneroMusical, CategoriaDisco, etc.
 │   └── video
-│       ├── domain            // MidiaVideo, DVD, Bluray
-│       └── enums             // GeneroFilme, CategoriaVideo, TipoEdicao, Resolucao
+│       ├── domain                 // MidiaVideo, DVD, Blu-ray
+│       └── enums                  // GeneroFilme, CategoriaVideo, etc.
 ├── artista
-│   └── domain                // entidade Artista
+│   ├── controller                 // ArtistaController
+│   ├── service                    // ArtistaService
+│   ├── repository                 // ArtistaRepository
+│   ├── domain                     // entidade Artista
+│   └── dto                        // ArtistaRequestDTO, ArtistaResponseDTO
 └── diretor
-    └── domain                // entidade Diretor
+    └── domain                     // entidade Diretor
 ```
-
 
 ## 🏗️ Tecnologias utilizadas
 
@@ -106,6 +138,7 @@ br.com.catalogo.mediacollectioncatalog
 - Validation
 - Flyway Migration
 - Lombok
+- MapStruct
 - OpenAPI (Swagger)
 
 ## 🗄️ Configuração do Banco de Dados
