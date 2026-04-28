@@ -59,5 +59,11 @@ public record CDRequestDTO(
                 },
                 example = "JEWEL_CASE"
         )
-        String tipoCD
+        String tipoCD,
+
+        @Schema(
+                description = "Lista de faixas do CD (uma por linha ou numeradas)",
+                example = "1. Intro\n2. Track One\n3. Track Two"
+        )
+                String faixasTexto
 ) {}

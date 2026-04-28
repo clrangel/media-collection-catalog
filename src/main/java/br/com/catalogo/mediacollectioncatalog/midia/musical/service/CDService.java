@@ -3,6 +3,8 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,10 +41,14 @@ public class CDService {
         // 3. Setar artista
         cd.setArtista(artista);
 
-        // 4. Salvar
+        // 4. Adiciona Faixas
+        List<Faixa> faixas = parseFaixas(dto.faixasTexto(), cd);
+        cd.setFaixas(faixas);
+
+        // 5. Salvar
         CD cdSalvo = repository.save(cd);
 
-        // 5. Converter para DTO
+        // 6. Converter para DTO
         return mapper.toDTO(cdSalvo);
     }
 
@@ -96,5 +103,41 @@ public class CDService {
         List<CD> cds = repository.findAllWithArtista();
 
         return mapper.toDTOList(cds);
+    }
+
+
+    // Parser de faixas: transforma texto em lista de entidades Faixa
+    // Converte uma string de faixas (uma por linha, opcionalmente numeradas)
+    // em uma lista de entidades Faixa associadas à mídia musical
+    private List<Faixa> parseFaixas(String faixasTexto, MidiaMusical midia) {
+
+        List<Faixa> faixas = new ArrayList<>();
+
+        if (faixasTexto == null || faixasTexto.isBlank()) {
+            return faixas;
+        }
+
+        String[] linhas = faixasTexto.split("\\n");
+
+        int numero = 1;
+
+        for (String linha : linhas) {
+
+            String titulo = linha.trim();
+
+            // Remove numeração tipo "1. ", "2 - ", etc.
+            titulo = titulo.replaceAll("^\\d+[\\.\\-\\s]+", "");
+
+            if (titulo.isBlank()) continue;
+
+            Faixa faixa = new Faixa();
+            faixa.setNumero(numero++);
+            faixa.setTitulo(titulo);
+            faixa.setMidiaMusical(midia);
+
+            faixas.add(faixa);
+        }
+
+        return faixas;
     }
 }
