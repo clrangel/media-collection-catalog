@@ -1,8 +1,10 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct;
 
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public interface CDMapper {
 
     // Converte a entidade em uma representação textual do tipo de mídia (ex: CD)
     @Mapping(target = "tipoMidia", source = ".", qualifiedByName = "mapTipoMidia")
+    @Mapping(source = "faixas", target = "faixas") // Mapeia as Faixas explicitamente
     CDResponseDTO toDTO(CD cd);
 
     @Named("mapTipoMidia")
@@ -46,4 +49,9 @@ public interface CDMapper {
 
     // MapStruct gera a implementação automaticamente
     List<CDResponseDTO> toDTOList(List<CD> cds);
+
+    // 👇 Mapeamento de Faixa
+    FaixaResponseDTO toFaixaDTO(Faixa faixa);
+
+    List<FaixaResponseDTO> toFaixaDTOList(List<Faixa> faixas);
 }

@@ -1,5 +1,9 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto;
 
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
+
+import java.util.List;
+
 public record CDResponseDTO(
 
         Long id,
@@ -15,5 +19,7 @@ public record CDResponseDTO(
         String formatoDisco,
         String tipoCD,
 
-        String tipoMidia
+        String tipoMidia,
+
+        List<FaixaResponseDTO>faixas
 ) {}
