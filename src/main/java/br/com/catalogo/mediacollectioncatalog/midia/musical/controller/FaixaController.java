@@ -5,6 +5,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaDe
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.service.FaixaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Tag(name = "Faixas", description = "Operações relacionadas às faixas musicais")
 @RequestMapping("/faixas")
 @RequiredArgsConstructor
 public class FaixaController {
