@@ -5,6 +5,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaDe
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.service.FaixaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,10 @@ public class FaixaController {
     private final FaixaMapper faixaMapper;
 
     @GetMapping
+    @Operation(
+            summary = "Buscar faixas por título",
+            description = "Busca faixas pelo título (parcial e ignorando maiúsculas/minúsculas), retornando número e nome da faixa."
+    )
     public ResponseEntity<List<FaixaResponseDTO>> buscarFaixas(
             @RequestParam String titulo) {
 
@@ -38,6 +43,10 @@ public class FaixaController {
     }
 
     @GetMapping("/detalhado")
+    @Operation(
+            summary = "Buscar faixas detalhadas por título",
+            description = "Busca faixas pelo título (parcial e ignorando maiúsculas/minúsculas), retornando também o nome do CD e do artista."
+    )
     public ResponseEntity<List<FaixaDetalhadaResponseDTO>> buscarFaixasDetalhado(
             @RequestParam String titulo) {
 
