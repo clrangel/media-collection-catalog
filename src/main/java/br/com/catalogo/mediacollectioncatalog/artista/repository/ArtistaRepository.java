@@ -24,4 +24,6 @@ public interface ArtistaRepository extends JpaRepository<Artista, Long> {
     WHERE LOWER(a.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
 """)
     List<Artista> buscarPorNomeComMidias(@Param("nome") String nome);
+
+    List<Artista> findByOrigemIgnoreCaseOrderByNomeAsc(String origem);
 }

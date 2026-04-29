@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.artista.controller;
 
+import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaNomeDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.service.ArtistaService;
@@ -66,6 +67,15 @@ public class ArtistaController {
             @RequestParam String nome) {
 
         List<ArtistaResponseDTO> response = service.buscarPorNome(nome);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/origem")
+    public ResponseEntity<List<ArtistaNomeDTO>> buscarPorOrigem(
+            @RequestParam String origem) {
+
+        List<ArtistaNomeDTO> response = service.buscarPorOrigem(origem);
 
         return ResponseEntity.ok(response);
     }

@@ -1,6 +1,7 @@
 package br.com.catalogo.mediacollectioncatalog.artista.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
+import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaNomeDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.mapper.ArtistaMapper;
@@ -86,6 +87,14 @@ public class ArtistaService {
         return repository.buscarPorNomeComMidias(nome)
                 .stream()
                 .map(ArtistaMapper::toDTO)
+                .toList();
+    }
+
+    public List<ArtistaNomeDTO> buscarPorOrigem(String origem) {
+
+        return repository.findByOrigemIgnoreCaseOrderByNomeAsc(origem)
+                .stream()
+                .map(a -> new ArtistaNomeDTO(a.getNome()))
                 .toList();
     }
 }
