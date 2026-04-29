@@ -50,7 +50,7 @@ public interface CDMapper {
     // MapStruct gera a implementação automaticamente
     List<CDResponseDTO> toDTOList(List<CD> cds);
 
-    // 👇 Mapeamento de Faixa
+    // Mapeamento de Faixa
     FaixaResponseDTO toFaixaDTO(Faixa faixa);
 
     List<FaixaResponseDTO> toFaixaDTOList(List<Faixa> faixas);

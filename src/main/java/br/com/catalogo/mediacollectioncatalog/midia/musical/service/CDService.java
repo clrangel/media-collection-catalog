@@ -41,7 +41,7 @@ public class CDService {
         // 3. Setar artista
         cd.setArtista(artista);
 
-        // 4. Adiciona Faixas
+        // 4. Adiciona Faixas <-Parse
         List<Faixa> faixas = parseFaixas(dto.faixasTexto(), cd);
         cd.setFaixas(faixas);
 
