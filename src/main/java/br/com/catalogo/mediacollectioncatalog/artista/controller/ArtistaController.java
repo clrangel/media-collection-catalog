@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "Artistas", description = "Operações relacionadas aos artistas")
 
 @RequiredArgsConstructor
@@ -47,6 +49,14 @@ public class ArtistaController {
     public ResponseEntity<ArtistaResponseDTO> buscarPorId(@PathVariable Long id) {
 
         ArtistaResponseDTO response = service.buscarPorId(id);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ArtistaResponseDTO>> buscarTodos() {
+
+        List<ArtistaResponseDTO> response = service.buscarTodos();
 
         return ResponseEntity.ok(response);
     }

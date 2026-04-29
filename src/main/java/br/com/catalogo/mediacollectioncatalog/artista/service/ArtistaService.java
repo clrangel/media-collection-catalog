@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ArtistaService {
@@ -69,5 +71,13 @@ public class ArtistaService {
                 ));
 
         return ArtistaMapper.toDTO(artista);
+    }
+
+    public List<ArtistaResponseDTO> buscarTodos() {
+
+        return repository.findAll()
+                .stream()
+                .map(ArtistaMapper::toDTO)
+                .toList();
     }
 }
