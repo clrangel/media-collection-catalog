@@ -40,4 +40,5 @@ public class ArtistaMapper {
             artista.setOrigem(dto.origem());
         }
     }
+
 }

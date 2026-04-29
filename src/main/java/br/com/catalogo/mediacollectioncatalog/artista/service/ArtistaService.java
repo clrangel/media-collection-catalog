@@ -41,4 +41,22 @@ public class ArtistaService {
 
         return ArtistaMapper.toDTO(atualizado);
     }
+
+    public void deletar(Long id) {
+
+        Artista artista = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Artista não encontrado com ID: " + id
+                ));
+
+        if (!artista.getMidias().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Não é possível excluir artista com mídias associadas"
+            );
+        }
+
+        repository.delete(artista);
+    }
 }
