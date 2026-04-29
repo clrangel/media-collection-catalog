@@ -60,4 +60,13 @@ public class ArtistaController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ArtistaResponseDTO>> buscarPorNome(
+            @RequestParam String nome) {
+
+        List<ArtistaResponseDTO> response = service.buscarPorNome(nome);
+
+        return ResponseEntity.ok(response);
+    }
 }

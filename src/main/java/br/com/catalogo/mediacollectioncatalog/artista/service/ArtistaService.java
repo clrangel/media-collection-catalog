@@ -80,4 +80,12 @@ public class ArtistaService {
                 .map(ArtistaMapper::toDTO)
                 .toList();
     }
+
+    public List<ArtistaResponseDTO> buscarPorNome(String nome) {
+
+        return repository.buscarPorNomeComMidias(nome)
+                .stream()
+                .map(ArtistaMapper::toDTO)
+                .toList();
+    }
 }
