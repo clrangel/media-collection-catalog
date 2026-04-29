@@ -42,4 +42,12 @@ public class ArtistaController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistaResponseDTO> buscarPorId(@PathVariable Long id) {
+
+        ArtistaResponseDTO response = service.buscarPorId(id);
+
+        return ResponseEntity.ok(response);
+    }
 }

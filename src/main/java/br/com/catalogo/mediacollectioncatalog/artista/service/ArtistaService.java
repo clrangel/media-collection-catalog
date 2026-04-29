@@ -59,4 +59,15 @@ public class ArtistaService {
 
         repository.delete(artista);
     }
+
+    public ArtistaResponseDTO buscarPorId(Long id) {
+
+        Artista artista = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Artista não encontrado com ID: " + id
+                ));
+
+        return ArtistaMapper.toDTO(artista);
+    }
 }
