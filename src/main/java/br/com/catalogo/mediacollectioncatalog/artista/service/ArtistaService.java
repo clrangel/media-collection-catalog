@@ -64,7 +64,7 @@ public class ArtistaService {
 
     public ArtistaResponseDTO buscarPorId(Long id) {
 
-        Artista artista = repository.findById(id)
+        Artista artista = repository.buscarComMidias(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Artista não encontrado com ID: " + id

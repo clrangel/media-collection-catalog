@@ -7,5 +7,5 @@ public record ArtistaResponseDTO(
         Long id,
         String nome,
         String origem,
-        List<Long> midiasIds
+        List<MidiaResumoDTO> midias
 ) {}

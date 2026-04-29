@@ -3,6 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.artista.mapper;
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaResponseDTO;
+import br.com.catalogo.mediacollectioncatalog.artista.dtos.MidiaResumoDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.Midia;
 
 public class ArtistaMapper {
@@ -15,7 +16,11 @@ public class ArtistaMapper {
                 artista.getOrigem(),
                 artista.getMidias()
                         .stream()
-                        .map(Midia::getId)
+                        .map(m -> new MidiaResumoDTO(
+                                m.getTitulo(),
+                                m.getAnoLancamento(),
+                                mapTipoMidia(m)
+                        ))
                         .toList()
         );
     }
@@ -39,6 +44,12 @@ public class ArtistaMapper {
         if (dto.origem() != null) {
             artista.setOrigem(dto.origem());
         }
+    }
+
+    // Método Auxiliar
+
+    private static String mapTipoMidia(Midia m) {
+        return m.getClass().getSimpleName().toUpperCase();
     }
 
 }
