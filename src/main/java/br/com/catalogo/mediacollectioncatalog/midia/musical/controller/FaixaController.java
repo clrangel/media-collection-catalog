@@ -1,5 +1,7 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.controller;
 
+import br.com.catalogo.mediacollectioncatalog.mapper.FaixaMapper;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaDetalhadaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.service.FaixaService;
@@ -19,6 +21,7 @@ public class FaixaController {
 
     private final FaixaService service;
     private final CDMapper mapper;
+    private final FaixaMapper faixaMapper;
 
     @GetMapping
     public ResponseEntity<List<FaixaResponseDTO>> buscarFaixas(
@@ -27,6 +30,18 @@ public class FaixaController {
         List<FaixaResponseDTO> response = service.buscarPorTitulo(titulo)
                 .stream()
                 .map(mapper::toFaixaDTO)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/detalhado")
+    public ResponseEntity<List<FaixaDetalhadaResponseDTO>> buscarFaixasDetalhado(
+            @RequestParam String titulo) {
+
+        List<FaixaDetalhadaResponseDTO> response = service.buscarDetalhado(titulo)
+                .stream()
+                .map(faixaMapper::toDetalhadoDTO)
                 .toList();
 
         return ResponseEntity.ok(response);
