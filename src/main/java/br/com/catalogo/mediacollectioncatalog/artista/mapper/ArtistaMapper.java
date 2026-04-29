@@ -30,4 +30,14 @@ public class ArtistaMapper {
 
         return artista;
     }
+
+    // Atualiza uma entidade existente com dados do DTO (evita criar novo objeto)
+    public static void updateFromDTO(ArtistaRequestDTO dto, Artista artista) {
+        if (dto.nome() != null) {
+            artista.setNome(dto.nome());
+        }
+        if (dto.origem() != null) {
+            artista.setOrigem(dto.origem());
+        }
+    }
 }
