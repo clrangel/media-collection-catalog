@@ -16,18 +16,45 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 - Relacionamentos entre entidades
 - Arquitetura orientada a domínio (DDD)
 - Boas práticas com Spring Boot
-- Mapeamento entre camadas com MapStruct
+- Mapeamento entre camadas (MapStruct e manual)
+- Manipulação e transformação de dados (parsing)
 
 ## 🚀 Funcionalidades atuais
 
-✔️ CRUD completo de CDs  
-✔️ Cadastro de Artistas  
-✔️ Relacionamento entre CD e Artista  
-✔️ Conversão DTO ↔ Entity com MapStruct  
+✔️ CRUD completo de CDs
+✔️ CRUD completo de Artistas  
+✔️ Relacionamento entre CD, Artista e Faixas  
+✔️ Cadastro de faixas via entrada de texto (parser com quebra de linha)  
+✔️ Conversão DTO ↔ Entity com MapStruct e mappers manuais  
 ✔️ Queries otimizadas com JOIN FETCH  
 ✔️ Tratamento de erros com ResponseStatusException  
 ✔️ Documentação interativa com Swagger (http://localhost:8080/swagger-ui.html)
+✔️ Documentação enriquecida com @Operation e @Schema
 
+---
+## 🎵 Funcionalidades do Domínio Musical
+
+### 🎧 CDs e Faixas
+- Cadastro de CDs com múltiplas faixas a partir de texto livre (parser)
+- Associação automática entre CD e faixas
+- Persistência em cascata (cascade)
+
+### 🔍 Busca de Faixas
+- Busca por título (case insensitive)
+- Endpoint simples (dados básicos da faixa)
+- Endpoint detalhado (inclui CD e artista)
+- Query customizada com JOIN FETCH para evitar N+1
+
+### 🎤 Artistas
+- CRUD completo de artistas
+- Busca por ID com retorno enriquecido (incluindo mídias)
+- Busca por nome (parcial e case insensitive)
+- Busca por origem (retorno simplificado e ordenado)
+- Retorno de mídias com título, ano e tipo (CD, Vinil, etc.)
+
+### 🧠 Estratégias de Mapeamento
+- Uso de MapStruct para conversões simples
+- Uso de mapper manual para cenários complexos
 ---
 
 ## 🧠 Domínio da aplicação
