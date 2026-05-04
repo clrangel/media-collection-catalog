@@ -1,0 +1,89 @@
+package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
+
+import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
+import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Vinil;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRequestDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilResponseDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.VinilMapper;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.VinilRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RequiredArgsConstructor
+@Service
+public class VinilService {
+
+    private final VinilRepository repository;
+    private final ArtistaRepository artistaRepository;
+    private final VinilMapper mapper;
+
+    public VinilResponseDTO cadastrarVinil(VinilRequestDTO dto){
+
+        // 1. Converter DTO → Entity
+        Vinil vinil = mapper.toEntity(dto);
+
+        // 2. Buscar artista
+        Artista artista = artistaRepository.findById(dto.artistaId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Artista não encontrado com o ID: " + dto.artistaId()
+                ));
+
+        // 3. Setar artista
+        vinil.setArtista(artista);
+
+        // 4. Adiciona Faixas <-Parse
+        List<Faixa> faixas = parseFaixas(dto.faixasTexto(), vinil);
+        vinil.setFaixas(faixas);
+
+        // 5. Salvar
+        Vinil vinilSalvo = repository.save(vinil);
+
+        // 6. Converter para DTO
+        return mapper.toDTO(vinilSalvo);
+    }
+
+    // Parser de faixas: transforma texto em lista de entidades Faixa
+    // Converte uma string de faixas (uma por linha, opcionalmente numeradas)
+    // em uma lista de entidades Faixa associadas à mídia musical
+    private List<Faixa> parseFaixas(String faixasTexto, MidiaMusical midia) {
+
+        List<Faixa> faixas = new ArrayList<>();
+
+        if (faixasTexto == null || faixasTexto.isBlank()) {
+            return faixas;
+        }
+
+        String[] linhas = faixasTexto.split("\\n");
+
+        int numero = 1;
+
+        for (String linha : linhas) {
+
+            String titulo = linha.trim();
+
+            // Remove numeração tipo "1. ", "2 - ", etc.
+            titulo = titulo.replaceAll("^\\d+[\\.\\-\\s]+", "");
+
+            if (titulo.isBlank()) continue;
+
+            Faixa faixa = new Faixa();
+            faixa.setNumero(numero++);
+            faixa.setTitulo(titulo);
+            faixa.setMidiaMusical(midia);
+
+            faixas.add(faixa);
+        }
+
+        return faixas;
+    }
+
+}
