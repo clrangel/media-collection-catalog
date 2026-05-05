@@ -89,6 +89,15 @@ public class VinilService {
         return mapper.toDTO(vinilSalvo);
     }
 
+    public void deletarVinil(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Vinil não encontrado com o ID: " + id
+            );
+        }
+        repository.deleteById(id);
+    }
+
     // Parser de faixas: transforma texto em lista de entidades Faixa
     // Converte uma string de faixas (uma por linha, opcionalmente numeradas)
     // em uma lista de entidades Faixa associadas à mídia musical
