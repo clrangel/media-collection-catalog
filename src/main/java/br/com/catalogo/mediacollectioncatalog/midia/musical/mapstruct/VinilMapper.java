@@ -5,9 +5,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Vinil;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilResponseDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -44,6 +42,10 @@ public interface VinilMapper {
     default String mapTipoMidia(Vinil vinil) {
         return "Vinil";
     }
+
+    // Atualiza um Vinil existente com dados do DTO
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateFromDto(VinilRequestDTO dto, @MappingTarget Vinil entity);
 
     // Mapeamento de Faixa
     FaixaResponseDTO toFaixaDTO(Faixa faixa);

@@ -11,10 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(
         name = "Vinis",
@@ -35,5 +32,18 @@ public class VinilController {
     public ResponseEntity<VinilResponseDTO> cadastrarVinil(@Valid @RequestBody VinilRequestDTO dto){
         VinilResponseDTO vinilCriado = service.cadastrarVinil(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(vinilCriado);
+    }
+
+    @Operation(
+            summary = "Atualizar Vinil",
+            description = "Atualiza os dados de um Vinil existente no sistema com base no ID informado"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<VinilResponseDTO> atualizarVinil(
+            @PathVariable Long id,
+            @Valid @RequestBody VinilRequestDTO dto) {
+
+        VinilResponseDTO atualizado = service.atualizarVinil(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 }
