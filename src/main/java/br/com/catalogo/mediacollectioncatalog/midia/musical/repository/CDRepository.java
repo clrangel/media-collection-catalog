@@ -10,7 +10,12 @@ import java.util.Optional;
 
 public interface CDRepository extends JpaRepository<CD, Long> {
 
-    @Query("SELECT c FROM CD c JOIN FETCH c.artista WHERE c.id = :id")
+    @Query("""
+    SELECT c FROM CD c
+    LEFT JOIN FETCH c.artista
+    LEFT JOIN FETCH c.faixas
+    WHERE c.id = :id
+    """)
     Optional<CD> findByIdWithArtista(@Param("id") Long id);
 
     @Query("SELECT c FROM CD c JOIN FETCH c.artista")
