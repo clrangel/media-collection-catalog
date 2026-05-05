@@ -2,9 +2,11 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Vinil;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.VinilMapper;
@@ -96,6 +98,16 @@ public class VinilService {
             );
         }
         repository.deleteById(id);
+    }
+
+    public VinilResponseDTO buscarVinilPorId(Long id) {
+
+        Vinil vinil = repository.findByIdWithArtista(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Vinil não encontrado com o ID: " + id
+                ));
+
+        return mapper.toDTO(vinil);
     }
 
     // Parser de faixas: transforma texto em lista de entidades Faixa

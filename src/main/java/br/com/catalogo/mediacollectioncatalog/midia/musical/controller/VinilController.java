@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.controller;
 
+import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.service.VinilService;
@@ -53,5 +54,15 @@ public class VinilController {
     public ResponseEntity<Void> deletarVinil(@PathVariable Long id){
         service.deletarVinil(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+            summary = "Buscar Vinil por ID",
+            description = "Retorna os dados de um Vinil específico com base no ID informado"
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<VinilResponseDTO> buscarVinilPorId(@PathVariable Long id) {
+        VinilResponseDTO vinil = service.buscarVinilPorId(id);
+        return ResponseEntity.ok(vinil);
     }
 }
