@@ -77,15 +77,24 @@ public class CDService {
         // 3. Atualiza o artista manualmente (mapper ignora esse campo)
         Artista artista = artistaRepository.findById(dto.artistaId())
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
+                        HttpStatus.NOT_FOUND, "Artista não encontrado com o ID: " + dto.artistaId()
                 ));
 
         cd.setArtista(artista);
 
-        // 4. Salva o objeto atualizado
+        // 4. Atualizar faixas (se vier no DTO)
+        if (dto.faixasTexto() != null) {
+            cd.getFaixas().clear();
+
+            List<Faixa> novasFaixas = parseFaixas(dto.faixasTexto(), cd);
+
+            cd.getFaixas().addAll(novasFaixas);
+        }
+
+        // 5. Salva o objeto atualizado
         CD cdSalvo = repository.save(cd);
 
-        // 5. Retorna o DTO de resposta
+        // 6. Retorna o DTO de resposta
         return mapper.toDTO(cdSalvo);
     }
 

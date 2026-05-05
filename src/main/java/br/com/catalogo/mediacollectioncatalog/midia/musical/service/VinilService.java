@@ -79,7 +79,7 @@ public class VinilService {
 
             List<Faixa> novasFaixas = parseFaixas(dto.faixasTexto(), vinil);
 
-            vinil.getFaixas().addAll(novasFaixas); // ✅ correto
+            vinil.getFaixas().addAll(novasFaixas);
         }
 
         // 5. Salva o objeto atualizado
