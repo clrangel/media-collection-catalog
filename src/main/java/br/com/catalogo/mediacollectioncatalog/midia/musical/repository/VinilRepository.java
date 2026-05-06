@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VinilRepository extends JpaRepository<Vinil, Long> {
@@ -16,5 +17,8 @@ public interface VinilRepository extends JpaRepository<Vinil, Long> {
     WHERE v.id = :id
 """)
     Optional<Vinil> findByIdWithArtista(@Param("id") Long id);
+
+    @Query("SELECT v FROM Vinil v JOIN FETCH v.artista")
+    List<Vinil> findAllWithArtista();
 
 }

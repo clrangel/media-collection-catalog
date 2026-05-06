@@ -47,6 +47,9 @@ public interface VinilMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(VinilRequestDTO dto, @MappingTarget Vinil entity);
 
+    // MapStruct gera a implementação automaticamente
+    List<VinilResponseDTO> toDTOList(List<Vinil> vinis);
+
     // Mapeamento de Faixa
     FaixaResponseDTO toFaixaDTO(Faixa faixa);
 

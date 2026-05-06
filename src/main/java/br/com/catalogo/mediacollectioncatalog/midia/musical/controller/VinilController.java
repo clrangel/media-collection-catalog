@@ -1,6 +1,5 @@
 package br.com.catalogo.mediacollectioncatalog.midia.musical.controller;
 
-import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.service.VinilService;
@@ -11,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(
         name = "Vinis",
@@ -64,5 +65,15 @@ public class VinilController {
     public ResponseEntity<VinilResponseDTO> buscarVinilPorId(@PathVariable Long id) {
         VinilResponseDTO vinil = service.buscarVinilPorId(id);
         return ResponseEntity.ok(vinil);
+    }
+
+    @Operation(
+            summary = "Listar todos os Vinis",
+            description = "Retorna uma lista com todos os Vinis cadastrados no sistema"
+    )
+    @GetMapping
+    public ResponseEntity<List<VinilResponseDTO>> listarTodosVinis() {
+        List<VinilResponseDTO> vinis = service.listarTodosVinis();
+        return ResponseEntity.ok(vinis);
     }
 }
