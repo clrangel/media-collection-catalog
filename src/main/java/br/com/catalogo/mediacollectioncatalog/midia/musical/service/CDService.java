@@ -26,6 +26,7 @@ public class CDService {
     private final ArtistaRepository artistaRepository;
     private final CDMapper mapper;
 
+    @Transactional
     public CDResponseDTO cadastrarCD(CDRequestDTO dto){
 
         // 1. Converter DTO → Entity
@@ -52,6 +53,7 @@ public class CDService {
         return mapper.toDTO(cdSalvo);
     }
 
+    @Transactional
     public void deletarCD(Long id){
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(

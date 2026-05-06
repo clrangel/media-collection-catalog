@@ -26,6 +26,7 @@ public class VinilService {
     private final ArtistaRepository artistaRepository;
     private final VinilMapper mapper;
 
+    @Transactional
     public VinilResponseDTO cadastrarVinil(VinilRequestDTO dto){
 
         // 1. Converter DTO → Entity
@@ -89,6 +90,7 @@ public class VinilService {
         return mapper.toDTO(vinilSalvo);
     }
 
+    @Transactional
     public void deletarVinil(Long id){
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(
