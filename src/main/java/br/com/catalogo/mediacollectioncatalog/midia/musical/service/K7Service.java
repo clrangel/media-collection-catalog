@@ -100,6 +100,16 @@ public class K7Service {
         repository.deleteById(id);
     }
 
+    public K7ResponseDTO buscarK7PorId(Long id) {
+
+        K7 k7 = repository.findByIdWithArtista(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "K7 não encontrado com o ID: " + id
+                ));
+
+        return mapper.toDTO(k7);
+    }
+
     // Parser de faixas: transforma texto em lista de entidades Faixa
     private List<Faixa> parseFaixas(String faixasTexto, MidiaMusical midia) {
 

@@ -57,4 +57,14 @@ public class K7Controller {
         service.deletarK7(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(
+            summary = "Buscar K7 por ID",
+            description = "Retorna os dados de um K7 específico com base no ID informado"
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<K7ResponseDTO> buscarK7PorId(@PathVariable Long id) {
+        K7ResponseDTO k7 = service.buscarK7PorId(id);
+        return ResponseEntity.ok(k7);
+    }
 }
