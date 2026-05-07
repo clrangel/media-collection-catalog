@@ -10,10 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(
         name = "K7s",
@@ -35,5 +32,19 @@ public class K7Controller {
     public ResponseEntity<K7ResponseDTO> cadastrarK7(@Valid @RequestBody K7RequestDTO dto){
         K7ResponseDTO k7Criado = service.cadastrarK7(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(k7Criado);
+    }
+
+
+    @Operation(
+            summary = "Atualizar K7",
+            description = "Atualiza os dados de um K7 existente no sistema com base no ID informado"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<K7ResponseDTO> atualizarK7(
+            @PathVariable Long id,
+            @Valid @RequestBody K7RequestDTO dto) {
+
+        K7ResponseDTO atualizado = service.atualizarK7(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 }

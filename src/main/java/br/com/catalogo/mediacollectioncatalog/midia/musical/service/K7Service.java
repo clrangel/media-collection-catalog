@@ -53,6 +53,43 @@ public class K7Service {
         return mapper.toDTO(k7Salvo);
     }
 
+    @Transactional
+    public K7ResponseDTO atualizarK7(Long id, K7RequestDTO dto) {
+
+        // 1. Busca o K7 existente no banco
+        K7 k7 = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "K7 não encontrado com o ID: " + id
+                ));
+
+        // 2. Atualiza apenas os campos vindos do DTO
+        // Não recria o objeto, apenas modifica o existente
+        mapper.updateFromDto(dto, k7);
+
+        // 3. Atualiza o artista manualmente (mapper ignora esse campo)
+        Artista artista = artistaRepository.findById(dto.artistaId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Artista não encontrado com o ID: " + dto.artistaId()
+                ));
+
+        k7.setArtista(artista);
+
+        // 4. Atualizar faixas (se vier no DTO)
+        if (dto.faixasTexto() != null) {
+            k7.getFaixas().clear();
+
+            List<Faixa> novasFaixas = parseFaixas(dto.faixasTexto(), k7);
+
+            k7.getFaixas().addAll(novasFaixas);
+        }
+
+        // 5. Salva o objeto atualizado
+        K7 k7Salvo = repository.save(k7);
+
+        // 6. Retorna o DTO de resposta
+        return mapper.toDTO(k7Salvo);
+    }
+
     // Parser de faixas: transforma texto em lista de entidades Faixa
     private List<Faixa> parseFaixas(String faixasTexto, MidiaMusical midia) {
 

@@ -5,9 +5,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.K7;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.faixadto.FaixaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.k7.K7RequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.k7.K7ResponseDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -40,6 +38,10 @@ public interface K7Mapper {
     default String mapTipoMidia(K7 k7) {
         return "K7";
     }
+
+    // Atualiza um K7 existente com dados do DTO
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateFromDto(K7RequestDTO dto, @MappingTarget K7 entity);
 
     // Mapeamento de Faixa
     FaixaResponseDTO toFaixaDTO(Faixa faixa);
