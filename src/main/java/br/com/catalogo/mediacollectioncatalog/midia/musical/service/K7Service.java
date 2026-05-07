@@ -110,6 +110,12 @@ public class K7Service {
         return mapper.toDTO(k7);
     }
 
+    public List<K7ResponseDTO> listarTodosK7s() {
+        List<K7> k7s = repository.findAllWithArtista();
+
+        return mapper.toDTOList(k7s);
+    }
+
     // Parser de faixas: transforma texto em lista de entidades Faixa
     private List<Faixa> parseFaixas(String faixasTexto, MidiaMusical midia) {
 

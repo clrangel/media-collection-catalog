@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(
         name = "K7s",
         description = "Operações relacionadas ao gerenciamento de K7s")
@@ -66,5 +68,15 @@ public class K7Controller {
     public ResponseEntity<K7ResponseDTO> buscarK7PorId(@PathVariable Long id) {
         K7ResponseDTO k7 = service.buscarK7PorId(id);
         return ResponseEntity.ok(k7);
+    }
+
+    @Operation(
+            summary = "Listar todos os K7s",
+            description = "Retorna uma lista com todos os K7s cadastrados no sistema"
+    )
+    @GetMapping
+    public ResponseEntity<List<K7ResponseDTO>> listarTodosK7s() {
+        List<K7ResponseDTO> k7s = service.listarTodosK7s();
+        return ResponseEntity.ok(k7s);
     }
 }

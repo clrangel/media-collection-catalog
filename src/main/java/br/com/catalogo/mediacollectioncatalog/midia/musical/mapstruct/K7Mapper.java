@@ -43,6 +43,9 @@ public interface K7Mapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(K7RequestDTO dto, @MappingTarget K7 entity);
 
+    // MapStruct gera a implementação automaticamente
+    List<K7ResponseDTO> toDTOList(List<K7> k7s);
+
     // Mapeamento de Faixa
     FaixaResponseDTO toFaixaDTO(Faixa faixa);
 
