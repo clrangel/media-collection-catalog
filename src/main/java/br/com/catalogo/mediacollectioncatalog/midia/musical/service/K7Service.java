@@ -90,6 +90,16 @@ public class K7Service {
         return mapper.toDTO(k7Salvo);
     }
 
+    @Transactional
+    public void deletarK7(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "K7 não encontrado com o ID: " + id
+            );
+        }
+        repository.deleteById(id);
+    }
+
     // Parser de faixas: transforma texto em lista de entidades Faixa
     private List<Faixa> parseFaixas(String faixasTexto, MidiaMusical midia) {
 

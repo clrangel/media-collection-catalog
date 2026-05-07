@@ -47,4 +47,14 @@ public class K7Controller {
         K7ResponseDTO atualizado = service.atualizarK7(id, dto);
         return ResponseEntity.ok(atualizado);
     }
+
+    @Operation(
+            summary = "Deletar K7",
+            description = "Remove um K7 do sistema com base no ID informado"
+    )
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletarK7(@PathVariable Long id){
+        service.deletarK7(id);
+        return ResponseEntity.noContent().build();
+    }
 }
