@@ -21,23 +21,36 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 
 ## 🚀 Funcionalidades atuais
 
-✔️ CRUD completo de CDs
-✔️ CRUD completo de Artistas  
-✔️ Relacionamento entre CD, Artista e Faixas  
-✔️ Cadastro de faixas via entrada de texto (parser com quebra de linha)  
-✔️ Conversão DTO ↔ Entity com MapStruct e mappers manuais  
-✔️ Queries otimizadas com JOIN FETCH  
-✔️ Tratamento de erros com ResponseStatusException  
-✔️ Documentação interativa com Swagger (http://localhost:8080/swagger-ui.html)
-✔️ Documentação enriquecida com @Operation e @Schema
+✔️ CRUD completo de CDs  
+✔️ CRUD completo de Vinis  
+✔️ CRUD completo de K7s  
+✔️ CRUD completo de Artistas
+
+✔️ Relacionamento entre mídias musicais, artistas e faixas  
+✔️ Cadastro automático de faixas via parser de texto  
+✔️ Associação automática entre mídias e faixas  
+✔️ Persistência em cascata de entidades relacionadas
+
+✔️ Conversão DTO ↔ Entity com MapStruct  
+✔️ Atualização parcial de entidades com `@MappingTarget`  
+✔️ Queries otimizadas com `JOIN FETCH`  
+✔️ Estratégia de herança com `JOINED`
+
+✔️ Tratamento de erros com `ResponseStatusException`  
+✔️ Documentação interativa com Swagger/OpenAPI  
+✔️ Documentação enriquecida com `@Operation` e `@Schema`
 
 ---
 ## 🎵 Funcionalidades do Domínio Musical
 
-### 🎧 CDs e Faixas
-- Cadastro de CDs com múltiplas faixas a partir de texto livre (parser)
-- Associação automática entre CD e faixas
-- Persistência em cascata (cascade)
+### 🎧 CDs, Vinis e K7s
+- CRUD completo de mídias musicais
+- Cadastro de múltiplas faixas a partir de texto livre (parser)
+- Associação automática entre mídia e faixas
+- Persistência em cascata (`cascade`)
+- Conversão automática de DTOs com MapStruct
+- Atualização parcial com `@MappingTarget`
+- Identificação automática do tipo de mídia (`tipoMidia`)
 
 ### 🔍 Busca de Faixas
 - Busca por título (case insensitive)
@@ -128,9 +141,9 @@ br.com.catalogo.mediacollectioncatalog
 ├── midia
 │   ├── domain                     // classe base Midia
 │   ├── musical
-│   │   ├── controller             // CDController
-│   │   ├── service                // CDService
-│   │   ├── repository             // CDRepository
+│   │   ├── controller             // CDController, VinilController, K7Controller
+│   │   ├── service                // CDService, VinilService, K7Service
+│   │   ├── repository             // CDRepository, VinilRepository, K7Repository
 │   │   ├── domain                 // MidiaMusical, CD, Vinil, K7
 │   │   ├── dto                    // CDRequestDTO, CDResponseDTO
 │   │   ├── mapstruct              // CDMapper
@@ -147,6 +160,27 @@ br.com.catalogo.mediacollectioncatalog
 └── diretor
     └── domain                     // entidade Diretor
 ```
+## 🏛️ Arquitetura e Boas Práticas
+
+O projeto utiliza uma arquitetura baseada em separação por domínio (*package by feature*), organizada em camadas:
+
+- Controller
+- Service
+- Repository
+- DTO
+- MapStruct
+- Domain
+
+Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
+
+- Herança com JPA (`JOINED`)
+- DTO Pattern
+- Mapper Pattern
+- Parser de texto para entidades relacionadas
+- Queries otimizadas com `JOIN FETCH`
+- Tratamento centralizado de erros
+- Transações com `@Transactional`
+- Documentação com Swagger/OpenAPI
 
 ## 🏗️ Tecnologias utilizadas
 
@@ -155,6 +189,8 @@ br.com.catalogo.mediacollectioncatalog
 - Spring Data JPA
 - PostgreSQL
 - Maven
+- Hibernate / JPA
+- Swagger / OpenAPI
 
 ---
 
