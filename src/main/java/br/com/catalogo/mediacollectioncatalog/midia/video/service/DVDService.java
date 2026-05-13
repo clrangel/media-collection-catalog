@@ -115,6 +115,11 @@ public class DVDService {
                 ));
 
         return mapper.toDTO(dvd);
+    }
 
+    public List<DVDResponseDTO> listarTodosDVDs() {
+        List<DVD> dvds = repository.findAllWithDiretores();
+
+        return mapper.toDTOList(dvds);
     }
 }

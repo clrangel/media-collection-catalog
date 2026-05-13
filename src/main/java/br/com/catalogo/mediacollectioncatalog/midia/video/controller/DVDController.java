@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(
         name = "DVDs",
         description = "Operações relacionadas ao gerenciamento de DVDs")
@@ -65,6 +67,17 @@ public class DVDController {
     public ResponseEntity<DVDResponseDTO> buscarDVDPorId(@PathVariable Long id) {
         DVDResponseDTO dvd = service.buscarDVDPorId(id);
         return ResponseEntity.ok(dvd);
+    }
+
+
+    @Operation(
+            summary = "Listar todos os DVDs",
+            description = "Retorna uma lista com todos os DVDs cadastrados no sistema"
+    )
+    @GetMapping
+    public ResponseEntity<List<DVDResponseDTO>> listarTodosDVDs() {
+        List<DVDResponseDTO> dvds = service.listarTodosDVDs();
+        return ResponseEntity.ok(dvds);
     }
 
 }
