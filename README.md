@@ -24,7 +24,11 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 ✔️ CRUD completo de CDs  
 ✔️ CRUD completo de Vinis  
 ✔️ CRUD completo de K7s  
-✔️ CRUD completo de Artistas
+
+✔️ CRUD completo de DVDs
+
+✔️ CRUD completo de Artistas  
+✔️ CRUD básico parcial de Diretores (Cadastrar Diretores)
 
 ✔️ Relacionamento entre mídias musicais, artistas e faixas  
 ✔️ Cadastro automático de faixas via parser de texto  
@@ -65,9 +69,24 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 - Busca por origem (retorno simplificado e ordenado)
 - Retorno de mídias com título, ano e tipo (CD, Vinil, etc.)
 
+## 🎬 Funcionalidades do Domínio de Vídeo
+
+### 📀 DVDs
+- CRUD completo de DVDs
+- Associação de múltiplos diretores via relacionamento ManyToMany
+- Conversão automática de DTOs com MapStruct
+- Atualização parcial com `@MappingTarget`
+- Identificação automática do tipo de mídia (`tipoMidia`)
+- Queries otimizadas com `JOIN FETCH`
+
+### 🎬 Diretores
+- Cadastro de diretores
+- Associação entre diretores e mídias de vídeo
+
 ### 🧠 Estratégias de Mapeamento
-- Uso de MapStruct para conversões simples
-- Uso de mapper manual para cenários complexos
+- Uso de MapStruct para conversões simples e atualizações parciais
+- Uso de mapper manual para cenários específicos
+- Conversão automática de listas e relacionamentos
 ---
 
 ## 🧠 Domínio da aplicação
@@ -149,16 +168,27 @@ br.com.catalogo.mediacollectioncatalog
 │   │   ├── mapstruct              // CDMapper
 │   │   └── enums                  // GeneroMusical, CategoriaDisco, etc.
 │   └── video
+│       ├── controller             // DVDController
+│       ├── service                // DVDService
+│       ├── repository             // DVDRepository
 │       ├── domain                 // MidiaVideo, DVD, Blu-ray
+│       ├── dto                    // DVDRequestDTO, DVDResponseDTO
+│       ├── mapstruct              // DVDMapper
 │       └── enums                  // GeneroFilme, CategoriaVideo, etc.
 ├── artista
 │   ├── controller                 // ArtistaController
 │   ├── service                    // ArtistaService
 │   ├── repository                 // ArtistaRepository
 │   ├── domain                     // entidade Artista
-│   └── dto                        // ArtistaRequestDTO, ArtistaResponseDTO
-└── diretor
-    └── domain                     // entidade Diretor
+│   ├── dto                        // ArtistaRequestDTO, ArtistaResponseDTO
+│   └── mapper                     // ArtistaMapper 
+├── diretor
+│   ├── controller                 // DiretorController
+│   ├── service                    // DiretorService
+│   ├── repository                 // DiretorRepository
+│   ├── domain                     // entidade Diretor
+│   ├── dto                        // DiretorRequestDTO, DiretorResponseDTO
+│   └── mapper                     // DiretorMapper             
 ```
 ## 🏛️ Arquitetura e Boas Práticas
 
@@ -181,6 +211,7 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Tratamento centralizado de erros
 - Transações com `@Transactional`
 - Documentação com Swagger/OpenAPI
+- Relacionamentos ManyToMany entre entidades
 
 ## 🏗️ Tecnologias utilizadas
 
