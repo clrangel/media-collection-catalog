@@ -94,4 +94,14 @@ public class DVDService {
         // 5. Retorna DTO
         return mapper.toDTO(dvdAtualizado);
     }
+
+
+    @Transactional
+    public void deletarDVD(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DVD não encontrado com o ID: " + id
+            );
+        }
+        repository.deleteById(id);
+    }
 }

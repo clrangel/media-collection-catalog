@@ -44,4 +44,16 @@ public class DVDController {
         DVDResponseDTO atualizado = service.atualizarDVD(id, dto);
         return ResponseEntity.ok(atualizado);
     }
+
+
+    @Operation(
+            summary = "Deletar DVD",
+            description = "Remove um DVD do sistema com base no ID informado"
+    )
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletarDVD(@PathVariable Long id){
+        service.deletarDVD(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
