@@ -104,4 +104,17 @@ public class DVDService {
         }
         repository.deleteById(id);
     }
+
+
+    public DVDResponseDTO buscarDVDPorId(Long id) {
+
+        DVD dvd = repository.findByIdWithDiretores(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "DVD não encontrado com o ID: " + id
+                ));
+
+        return mapper.toDTO(dvd);
+
+    }
 }

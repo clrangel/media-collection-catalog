@@ -34,4 +34,7 @@ public interface DVDMapper {
     // Atualiza um DVD existente com dados do DTO
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(DVDRequestDTO dto, @MappingTarget DVD entity);
+
+    // MapStruct gera a implementação automaticamente
+    List<DVDResponseDTO> toDTOList(List<DVD> dvds);
 }

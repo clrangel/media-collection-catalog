@@ -56,4 +56,15 @@ public class DVDController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @Operation(
+            summary = "Buscar DVD por ID",
+            description = "Retorna os dados de um DVD específico com base no ID informado"
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<DVDResponseDTO> buscarDVDPorId(@PathVariable Long id) {
+        DVDResponseDTO dvd = service.buscarDVDPorId(id);
+        return ResponseEntity.ok(dvd);
+    }
+
 }
