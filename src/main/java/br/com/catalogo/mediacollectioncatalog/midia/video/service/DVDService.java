@@ -58,4 +58,40 @@ public class DVDService {
         // O mapper transforma a entidade no retorno da API
         return mapper.toDTO(dvdSalvo);
     }
+
+    @Transactional
+    public DVDResponseDTO atualizarDVD(Long id, DVDRequestDTO dto){
+
+        // 1. Busca o DVD existente
+        DVD dvd = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "DVD não encontrado com o ID: " + id
+                ));
+
+        // 2. Atualiza os campos simples
+        // titulo, sinopse, genero, etc.
+        mapper.updateFromDto(dto, dvd);
+
+        // 3. Atualiza os diretores manualmente
+        if (dto.diretoresIds() != null) {
+
+            // Busca todos os diretores enviados
+            List<Diretor> diretores = diretorRepository.findAllById(dto.diretoresIds());
+
+            // Valida se todos existem
+            if (diretores.size() != dto.diretoresIds().size()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Um ou mais diretores não foram encontrados");
+            }
+
+            // Substitui a lista antiga
+            dvd.setDiretores(diretores);
+        }
+
+        // 4. Salva atualização
+        DVD dvdAtualizado = repository.save(dvd);
+
+        // 5. Retorna DTO
+        return mapper.toDTO(dvdAtualizado);
+    }
 }

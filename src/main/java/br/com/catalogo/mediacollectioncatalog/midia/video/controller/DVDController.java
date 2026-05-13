@@ -10,10 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(
         name = "DVDs",
@@ -34,5 +31,17 @@ public class DVDController {
     public ResponseEntity<DVDResponseDTO> cadastrarDVD(@Valid @RequestBody DVDRequestDTO dto){
         DVDResponseDTO dvdCriado = service.cadastrarDVD(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dvdCriado);
+    }
+
+
+    @Operation(
+            summary = "Atualizar DVD",
+            description = "Atualiza os dados de um DVD existente no sistema com base no ID informado"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<DVDResponseDTO> atualizarDVD(@PathVariable Long id, @Valid @RequestBody DVDRequestDTO dto) {
+
+        DVDResponseDTO atualizado = service.atualizarDVD(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 }

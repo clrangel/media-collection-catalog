@@ -4,9 +4,7 @@ import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.DVD;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.DVDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.DVDResponseDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -33,4 +31,7 @@ public interface DVDMapper {
                 .toList();
     }
 
+    // Atualiza um DVD existente com dados do DTO
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateFromDto(DVDRequestDTO dto, @MappingTarget DVD entity);
 }
