@@ -6,6 +6,7 @@ public record DVDResponseDTO(
 
         Long id,
         String titulo,
+        String tituloOriginal,
         Integer anoLancamento,
 
         List<String> diretores,

@@ -22,6 +22,10 @@ import java.util.List;
 @ToString(exclude = "diretores")
 public class MidiaVideo extends Midia {
 
+    @Size(max = 150)
+    @Column(length = 150)
+    private String tituloOriginal;
+
     @Size(max = 250)
     @Column(nullable = false, length = 250)
     private String sinopse;

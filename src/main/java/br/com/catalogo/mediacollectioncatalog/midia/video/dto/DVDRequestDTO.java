@@ -9,6 +9,9 @@ public record DVDRequestDTO(
         @Schema(description = "Título do DVD", example = "Os Bons Companheiros")
         String titulo,
 
+        @Schema(description = "Título original do filme", example = "Goodfellas")
+        String tituloOriginal,
+
         @Schema(description = "Ano de lançamento", example = "1990")
         Integer anoLancamento,
 
