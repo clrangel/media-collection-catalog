@@ -1,4 +1,4 @@
-package br.com.catalogo.mediacollectioncatalog.midia.video.dto;
+package br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

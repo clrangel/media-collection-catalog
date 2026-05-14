@@ -1,8 +1,8 @@
 package br.com.catalogo.mediacollectioncatalog.midia.video.controller;
 
 
-import br.com.catalogo.mediacollectioncatalog.midia.video.dto.DVDRequestDTO;
-import br.com.catalogo.mediacollectioncatalog.midia.video.dto.DVDResponseDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDRequestDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.service.DVDService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

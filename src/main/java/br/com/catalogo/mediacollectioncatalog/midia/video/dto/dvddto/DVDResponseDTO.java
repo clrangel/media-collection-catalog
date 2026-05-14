@@ -1,4 +1,4 @@
-package br.com.catalogo.mediacollectioncatalog.midia.video.dto;
+package br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto;
 
 import java.util.List;
 

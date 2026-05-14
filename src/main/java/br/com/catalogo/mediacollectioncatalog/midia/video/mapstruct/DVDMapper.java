@@ -2,8 +2,8 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.mapstruct;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.DVD;
-import br.com.catalogo.mediacollectioncatalog.midia.video.dto.DVDRequestDTO;
-import br.com.catalogo.mediacollectioncatalog.midia.video.dto.DVDResponseDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDRequestDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDResponseDTO;
 import org.mapstruct.*;
 
 import java.util.List;
