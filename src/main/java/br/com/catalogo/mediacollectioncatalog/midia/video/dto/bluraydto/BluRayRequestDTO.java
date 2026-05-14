@@ -1,12 +1,12 @@
-package br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto;
+package br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public record DVDRequestDTO(
+public record BluRayRequestDTO(
 
-        @Schema(description = "Título do DVD", example = "Os Bons Companheiros")
+        @Schema(description = "Título do BluRay", example = "Os Bons Companheiros")
         String titulo,
 
         @Schema(description = "Título original do filme", example = "Goodfellas")
@@ -79,12 +79,21 @@ public record DVDRequestDTO(
         Integer numeroDiscos,
 
         @Schema(
-                description = "Tipo físico do DVD",
+                description = "Tipo físico do Bluray",
                 allowableValues = {
                         "SIMPLES","DUPLO","TRIPLO","BOX"
                 },
                 example = "SIMPLES"
         )
-        String tipoEdicao
+        String tipoEdicao,
 
-        ) {}
+        @Schema(
+                description = "Resolução da edição do Bluray",
+                allowableValues = {
+                        "HD", "FULL_HD", "UHD_4K", "UHD_8K"
+                },
+                example = "FULL_HD"
+        )
+                String resolucao
+
+) {}
