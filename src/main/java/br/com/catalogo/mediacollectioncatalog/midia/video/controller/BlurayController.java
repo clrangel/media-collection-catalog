@@ -45,4 +45,16 @@ public class BlurayController {
         BluRayResponseDTO atualizado = service.atualizarBluray(id, dto);
         return ResponseEntity.ok(atualizado);
     }
+
+
+
+    @Operation(
+            summary = "Deletar Bluray",
+            description = "Remove um Bluray do sistema com base no ID informado"
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarBluray(@PathVariable Long id){
+        service.deletarBluray(id);
+        return ResponseEntity.noContent().build();
+    }
 }

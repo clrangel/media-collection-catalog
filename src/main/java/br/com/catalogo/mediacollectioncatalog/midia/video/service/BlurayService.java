@@ -97,4 +97,13 @@ public class BlurayService {
     }
 
 
+    @Transactional
+    public void deletarBluray(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bluray não encontrado com o ID: " + id
+            );
+        }
+        repository.deleteById(id);
+    }
+
 }
