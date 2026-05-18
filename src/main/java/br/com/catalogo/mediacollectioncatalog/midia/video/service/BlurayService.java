@@ -59,4 +59,42 @@ public class BlurayService {
         return mapper.toDTO(bluraySalvo);
     }
 
+
+    @Transactional
+    public BluRayResponseDTO atualizarBluray(Long id, BluRayRequestDTO dto){
+
+        // 1. Busca o Bluray existente
+        Bluray bluray = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Bluray não encontrado com o ID: " + id
+                ));
+
+        // 2. Atualiza os campos simples
+        // titulo, sinopse, genero, etc.
+        mapper.updateFromDto(dto, bluray);
+
+        // 3. Atualiza os diretores manualmente
+        if (dto.diretoresIds() != null) {
+
+            // Busca todos os diretores enviados
+            List<Diretor> diretores = diretorRepository.findAllById(dto.diretoresIds());
+
+            // Valida se todos existem
+            if (diretores.size() != dto.diretoresIds().size()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Um ou mais diretores não foram encontrados");
+            }
+
+            // Substitui a lista antiga
+            bluray.setDiretores(diretores);
+        }
+
+        // 4. Salva atualização
+        Bluray blurayAtualizado = repository.save(bluray);
+
+        // 5. Retorna DTO
+        return mapper.toDTO(blurayAtualizado);
+    }
+
+
 }

@@ -4,9 +4,7 @@ import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.Bluray;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayResponseDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -33,4 +31,8 @@ public interface BlurayMapper {
                 .map(Diretor::getNome)
                 .toList();
     }
+
+    // Atualiza um Bluray existente com dados do DTO
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateFromDto(BluRayRequestDTO dto, @MappingTarget Bluray entity);
 }

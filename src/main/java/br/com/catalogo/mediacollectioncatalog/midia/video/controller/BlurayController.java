@@ -10,13 +10,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(
-        name = "name = Blu-rays",
+        name = "Blu-rays",
         description = "Operações relacionadas ao gerenciamento de BLURAYs")
 
 @RequiredArgsConstructor
@@ -35,5 +32,17 @@ public class BlurayController {
     public ResponseEntity<BluRayResponseDTO> cadastrarBluray(@Valid @RequestBody BluRayRequestDTO dto){
         BluRayResponseDTO blurayCriado = service.cadastrarBluray(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(blurayCriado);
+    }
+
+
+    @Operation(
+            summary = "Atualizar Bluray",
+            description = "Atualiza os dados de um Bluray existente no sistema com base no ID informado"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<BluRayResponseDTO> atualizarBluray(@PathVariable Long id, @Valid @RequestBody BluRayRequestDTO dto) {
+
+        BluRayResponseDTO atualizado = service.atualizarBluray(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 }
