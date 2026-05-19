@@ -106,4 +106,15 @@ public class BlurayService {
         repository.deleteById(id);
     }
 
+
+    public BluRayResponseDTO buscarBlurayPorId(Long id) {
+
+        Bluray bluray = repository.findByIdWithDiretores(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Bluray não encontrado com o ID: " + id
+                ));
+
+        return mapper.toDTO(bluray);
+    }
 }

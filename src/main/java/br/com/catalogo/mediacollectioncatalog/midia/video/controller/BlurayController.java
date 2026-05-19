@@ -57,4 +57,16 @@ public class BlurayController {
         service.deletarBluray(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+    @Operation(
+            summary = "Buscar Bluray por ID",
+            description = "Retorna os dados de um Bluray específico com base no ID informado"
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<BluRayResponseDTO> buscarBlurayPorId(@PathVariable Long id) {
+        BluRayResponseDTO bluray = service.buscarBlurayPorId(id);
+        return ResponseEntity.ok(bluray);
+    }
 }
