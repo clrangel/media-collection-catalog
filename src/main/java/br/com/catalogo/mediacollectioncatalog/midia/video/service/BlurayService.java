@@ -117,4 +117,10 @@ public class BlurayService {
 
         return mapper.toDTO(bluray);
     }
+
+    public List<BluRayResponseDTO> listarTodosBlurays() {
+        List<Bluray> blurays = repository.findAllWithDiretores();
+
+        return mapper.toDTOList(blurays);
+    }
 }

@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(
         name = "Blu-rays",
         description = "Operações relacionadas ao gerenciamento de BLURAYs")
@@ -68,5 +70,17 @@ public class BlurayController {
     public ResponseEntity<BluRayResponseDTO> buscarBlurayPorId(@PathVariable Long id) {
         BluRayResponseDTO bluray = service.buscarBlurayPorId(id);
         return ResponseEntity.ok(bluray);
+    }
+
+
+
+    @Operation(
+            summary = "Listar todos os Blurays",
+            description = "Retorna uma lista com todos os Blurays cadastrados no sistema"
+    )
+    @GetMapping
+    public ResponseEntity<List<BluRayResponseDTO>> listarTodosBlurays() {
+        List<BluRayResponseDTO> blurays = service.listarTodosBlurays();
+        return ResponseEntity.ok(blurays);
     }
 }

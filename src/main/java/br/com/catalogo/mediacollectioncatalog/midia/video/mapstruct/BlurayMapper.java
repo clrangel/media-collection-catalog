@@ -35,4 +35,7 @@ public interface BlurayMapper {
     // Atualiza um Bluray existente com dados do DTO
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(BluRayRequestDTO dto, @MappingTarget Bluray entity);
+
+    // MapStruct gera a implementação automaticamente
+    List<BluRayResponseDTO> toDTOList(List<Bluray> blurays);
 }
