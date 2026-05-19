@@ -20,7 +20,7 @@ public interface DVDRepository extends JpaRepository<DVD, Long> {
 
     // Busca todos os DVDs já carregando os diretores
     @Query("""
-        SELECT d FROM DVD d
+        SELECT DISTINCT d FROM DVD d
         LEFT JOIN FETCH d.diretores
     """)
     List<DVD> findAllWithDiretores();

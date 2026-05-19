@@ -21,7 +21,7 @@ public interface BlurayRepository extends JpaRepository<Bluray, Long> {
 
     // Busca todos os Blurays já carregando os diretores
     @Query("""
-        SELECT b FROM Bluray b
+        SELECT DISTINCT b FROM Bluray b
         LEFT JOIN FETCH b.diretores
     """)
     List<Bluray> findAllWithDiretores();
