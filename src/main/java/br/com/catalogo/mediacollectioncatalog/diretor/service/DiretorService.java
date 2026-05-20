@@ -63,4 +63,15 @@ public class DiretorService {
 
         repository.delete(diretor);
     }
+
+    public DiretorResponseDTO buscarPorId(Long id) {
+
+        Diretor diretor = repository.buscarComMidias(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Diretor não encontrado com ID: " + id
+                ));
+
+        return DiretorMapper.toDTO(diretor);
+    }
 }

@@ -58,4 +58,17 @@ public class DiretorController {
 
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Buscar diretor por ID",
+            description = "Retorna os dados de um diretor incluindo suas mídias (título, ano e tipo)."
+    )
+    public ResponseEntity<DiretorResponseDTO> buscarPorId(@PathVariable Long id) {
+
+        DiretorResponseDTO response = service.buscarPorId(id);
+
+        return ResponseEntity.ok(response);
+    }
 }
