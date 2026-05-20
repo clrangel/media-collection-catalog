@@ -1,6 +1,7 @@
 package br.com.catalogo.mediacollectioncatalog.diretor.service;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
+import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorNomeDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.mapper.DiretorMapper;
@@ -91,6 +92,15 @@ public class DiretorService {
         return repository.buscarPorNomeComMidias(nome)
                 .stream()
                 .map(DiretorMapper::toDTO)
+                .toList();
+    }
+
+
+    public List<DiretorNomeDTO> buscarPorNacionalidade(String nacionalidade) {
+
+        return repository.findByNacionalidadeIgnoreCaseOrderByNomeAsc(nacionalidade)
+                .stream()
+                .map(d -> new DiretorNomeDTO(d.getNome()))
                 .toList();
     }
 }

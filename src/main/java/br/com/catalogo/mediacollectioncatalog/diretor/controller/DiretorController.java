@@ -1,6 +1,7 @@
 package br.com.catalogo.mediacollectioncatalog.diretor.controller;
 
 
+import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorNomeDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.service.DiretorService;
@@ -97,6 +98,20 @@ public class DiretorController {
             @RequestParam String nome) {
 
         List<DiretorResponseDTO> response = service.buscarPorNome(nome);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/nacionalidade")
+    @Operation(
+            summary = "Buscar diretores por nacionalidade",
+            description = "Retorna uma lista de diretores filtrados pela nacionalidade (país), exibindo apenas o nome ordenado alfabeticamente."
+    )
+    public ResponseEntity<List<DiretorNomeDTO>> buscarPorNacionalidade(
+            @RequestParam String nacionalidade) {
+
+        List<DiretorNomeDTO> response = service.buscarPorNacionalidade(nacionalidade);
 
         return ResponseEntity.ok(response);
     }

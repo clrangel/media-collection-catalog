@@ -30,4 +30,6 @@ public interface DiretorRepository extends JpaRepository<Diretor, Long> {
     WHERE LOWER(d.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
 """)
     List<Diretor> buscarPorNomeComMidias(@Param("nome") String nome);
+
+    List<Diretor> findByNacionalidadeIgnoreCaseOrderByNomeAsc(String nacionalidade);
 }
