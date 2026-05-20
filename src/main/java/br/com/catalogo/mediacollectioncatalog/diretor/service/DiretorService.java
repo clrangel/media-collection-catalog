@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class DiretorService {
@@ -73,5 +75,13 @@ public class DiretorService {
                 ));
 
         return DiretorMapper.toDTO(diretor);
+    }
+
+    public List<DiretorResponseDTO> buscarTodos() {
+
+        return repository.buscarTodosComMidias()
+                .stream()
+                .map(DiretorMapper::toDTO)
+                .toList();
     }
 }

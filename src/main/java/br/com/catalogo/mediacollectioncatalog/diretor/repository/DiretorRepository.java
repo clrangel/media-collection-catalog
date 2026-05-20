@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DiretorRepository extends JpaRepository<Diretor, Long> {
@@ -16,4 +17,10 @@ public interface DiretorRepository extends JpaRepository<Diretor, Long> {
     WHERE d.id = :id
 """)
     Optional<Diretor> buscarComMidias(@Param("id") Long id);
+
+    @Query("""
+    SELECT DISTINCT d FROM Diretor d
+    LEFT JOIN FETCH d.midiasVideos
+""")
+    List<Diretor> buscarTodosComMidias();
 }

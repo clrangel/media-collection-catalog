@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "Diretores", description = "Operações relacionadas aos diretores")
 
 @RequiredArgsConstructor
@@ -68,6 +70,19 @@ public class DiretorController {
     public ResponseEntity<DiretorResponseDTO> buscarPorId(@PathVariable Long id) {
 
         DiretorResponseDTO response = service.buscarPorId(id);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping
+    @Operation(
+            summary = "Listar todos os diretores",
+            description = "Retorna uma lista com todos os diretores cadastrados."
+    )
+    public ResponseEntity<List<DiretorResponseDTO>> buscarTodos() {
+
+        List<DiretorResponseDTO> response = service.buscarTodos();
 
         return ResponseEntity.ok(response);
     }
