@@ -44,4 +44,23 @@ public class DiretorService {
 
         return DiretorMapper.toDTO(atualizado);
     }
+
+    @Transactional
+    public void deletar(Long id) {
+
+        Diretor diretor = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Diretor não encontrado com ID: " + id
+                ));
+
+        if (!diretor.getMidiasVideos().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Não é possível excluir diretor com mídias associadas"
+            );
+        }
+
+        repository.delete(diretor);
+    }
 }

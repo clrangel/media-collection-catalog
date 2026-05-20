@@ -39,10 +39,23 @@ public class DiretorController {
     )
     public ResponseEntity<DiretorResponseDTO> atualizar(
             @PathVariable Long id,
-            @RequestBody DiretorRequestDTO dto) {
+            @RequestBody @Valid DiretorRequestDTO dto) {
 
         DiretorResponseDTO response = service.atualizar(id, dto);
 
         return ResponseEntity.ok(response);
+    }
+
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Deletar diretor",
+            description = "Remove um diretor pelo ID. Não permite exclusão caso existam mídias associadas."
+    )
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+
+        service.deletar(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
