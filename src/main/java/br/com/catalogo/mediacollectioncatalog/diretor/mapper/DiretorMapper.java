@@ -1,6 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.diretor.mapper;
 
-import br.com.catalogo.mediacollectioncatalog.artista.dtos.MidiaResumoDTO;
+import br.com.catalogo.mediacollectioncatalog.midia.dtos.MidiaResumoDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.diretor.dtos.DiretorResponseDTO;

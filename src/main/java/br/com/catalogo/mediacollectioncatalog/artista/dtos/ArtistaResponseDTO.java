@@ -1,5 +1,6 @@
 package br.com.catalogo.mediacollectioncatalog.artista.dtos;
 
+import br.com.catalogo.mediacollectioncatalog.midia.dtos.MidiaResumoDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
