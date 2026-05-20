@@ -86,4 +86,18 @@ public class DiretorController {
 
         return ResponseEntity.ok(response);
     }
+
+
+    @GetMapping("/buscar")
+    @Operation(
+            summary = "Buscar diretores por nome",
+            description = "Busca diretores pelo nome (parcial e ignorando maiúsculas/minúsculas), retornando também suas mídias."
+    )
+    public ResponseEntity<List<DiretorResponseDTO>> buscarPorNome(
+            @RequestParam String nome) {
+
+        List<DiretorResponseDTO> response = service.buscarPorNome(nome);
+
+        return ResponseEntity.ok(response);
+    }
 }

@@ -23,4 +23,11 @@ public interface DiretorRepository extends JpaRepository<Diretor, Long> {
     LEFT JOIN FETCH d.midiasVideos
 """)
     List<Diretor> buscarTodosComMidias();
+
+    @Query("""
+    SELECT DISTINCT d FROM Diretor d
+    LEFT JOIN FETCH d.midiasVideos
+    WHERE LOWER(d.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
+""")
+    List<Diretor> buscarPorNomeComMidias(@Param("nome") String nome);
 }

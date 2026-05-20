@@ -84,4 +84,13 @@ public class DiretorService {
                 .map(DiretorMapper::toDTO)
                 .toList();
     }
+
+
+    public List<DiretorResponseDTO> buscarPorNome(String nome) {
+
+        return repository.buscarPorNomeComMidias(nome)
+                .stream()
+                .map(DiretorMapper::toDTO)
+                .toList();
+    }
 }
