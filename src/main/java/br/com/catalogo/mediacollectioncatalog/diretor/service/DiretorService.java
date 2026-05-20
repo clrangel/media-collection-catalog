@@ -7,7 +7,9 @@ import br.com.catalogo.mediacollectioncatalog.diretor.mapper.DiretorMapper;
 import br.com.catalogo.mediacollectioncatalog.diretor.repository.DiretorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
@@ -23,5 +25,23 @@ public class DiretorService {
         Diretor diretorSalvo = repository.save(diretor);
 
         return DiretorMapper.toDTO(diretorSalvo);
+    }
+
+    @Transactional
+    public DiretorResponseDTO atualizar(Long id, DiretorRequestDTO dto) {
+
+        Diretor diretor = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Diretor não encontrado com ID: " + id
+                ));
+
+        // Atualiza os dados
+        DiretorMapper.updateFromDTO(dto, diretor);
+
+        // Salva alterações
+        Diretor atualizado = repository.save(diretor);
+
+        return DiretorMapper.toDTO(atualizado);
     }
 }

@@ -41,4 +41,14 @@ public class DiretorMapper {
         return m.getClass().getSimpleName().toUpperCase();
     }
 
+    // Atualiza uma entidade existente com dados do DTO (evita criar novo objeto)
+    public static void updateFromDTO(DiretorRequestDTO dto, Diretor diretor) {
+        if (dto.nome() != null) {
+            diretor.setNome(dto.nome());
+        }
+        if (dto.nacionalidade() != null) {
+            diretor.setNacionalidade(dto.nacionalidade());
+        }
+    }
+
 }
