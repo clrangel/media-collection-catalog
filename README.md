@@ -25,10 +25,11 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 ✔️ CRUD completo de Vinis  
 ✔️ CRUD completo de K7s  
 
-✔️ CRUD completo de DVDs
+✔️ CRUD completo de DVDs  
+✔️CRUD completo de Blu-rays
 
 ✔️ CRUD completo de Artistas  
-✔️ CRUD básico parcial de Diretores (Cadastrar Diretores)
+✔️ CRUD completo de Diretores
 
 ✔️ Relacionamento entre mídias musicais, artistas e faixas  
 ✔️ Cadastro automático de faixas via parser de texto  
@@ -71,8 +72,9 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 
 ## 🎬 Funcionalidades do Domínio de Vídeo
 
-### 📀 DVDs
+### 📀 DVDs e Blu-rays
 - CRUD completo de DVDs
+- CRUD completo de Blu-rays
 - Associação de múltiplos diretores via relacionamento ManyToMany
 - Conversão automática de DTOs com MapStruct
 - Atualização parcial com `@MappingTarget`
@@ -80,8 +82,13 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 - Queries otimizadas com `JOIN FETCH`
 
 ### 🎬 Diretores
-- Cadastro de diretores
+- CRUD completo de diretores
+- Busca por ID com retorno enriquecido (incluindo mídias)
+- Busca por nome (parcial e case insensitive)
+- Busca por nacionalidade (retorno simplificado e ordenado)
 - Associação entre diretores e mídias de vídeo
+- Retorno de mídias com título, ano e tipo (DVD, Blu-ray, etc.)
+- Queries otimizadas com `JOIN FETCH`
 
 ### 🧠 Estratégias de Mapeamento
 - Uso de MapStruct para conversões simples e atualizações parciais
@@ -94,7 +101,7 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 O sistema é dividido em dois principais domínios:
 
 - 🎵 Mídias Musicais (CD, Vinil, K7)
-- 🎬 Mídias de Vídeo (DVD, Blu-ray)
+- 🎬 Mídias de Vídeo (DVD e Blu-ray)
 
 A modelagem utiliza herança para promover reutilização de código e melhor organização das entidades.
 
@@ -159,6 +166,7 @@ A estrutura segue o modelo *package by feature*, separando claramente os domíni
 br.com.catalogo.mediacollectioncatalog
 ├── midia
 │   ├── domain                     // classe base Midia
+│   ├── dto                        // MidiaResumoDTO
 │   ├── musical
 │   │   ├── controller             // CDController, VinilController, K7Controller
 │   │   ├── service                // CDService, VinilService, K7Service
@@ -168,12 +176,12 @@ br.com.catalogo.mediacollectioncatalog
 │   │   ├── mapstruct              // CDMapper
 │   │   └── enums                  // GeneroMusical, CategoriaDisco, etc.
 │   └── video
-│       ├── controller             // DVDController
-│       ├── service                // DVDService
-│       ├── repository             // DVDRepository
-│       ├── domain                 // MidiaVideo, DVD, Blu-ray
-│       ├── dto                    // DVDRequestDTO, DVDResponseDTO
-│       ├── mapstruct              // DVDMapper
+│       ├── controller             // DVDController, BlurayController
+│       ├── service                // DVDService, BlurayService
+│       ├── repository             // DVDRepository, BlurayRepository
+│       ├── domain                 // MidiaVideo, DVD, Bluray
+│       ├── dto                    // DVDRequestDTO, DVDResponseDTO, BlurayRequestDTO, BlurayResponseDTO
+│       ├── mapstruct              // DVDMapper, BlurayMapper
 │       └── enums                  // GeneroFilme, CategoriaVideo, etc.
 ├── artista
 │   ├── controller                 // ArtistaController
@@ -198,7 +206,7 @@ O projeto utiliza uma arquitetura baseada em separação por domínio (*package 
 - Service
 - Repository
 - DTO
-- MapStruct
+- MapStruct e mappers manuais
 - Domain
 
 Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
@@ -208,6 +216,7 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Mapper Pattern
 - Parser de texto para entidades relacionadas
 - Queries otimizadas com `JOIN FETCH`
+- Estratégias para evitar problema N+1
 - Tratamento centralizado de erros
 - Transações com `@Transactional`
 - Documentação com Swagger/OpenAPI

@@ -10,6 +10,8 @@ public record MidiaResumoDTO(
         @Schema(description = "Ano de lançamento", example = "2003")
         Integer anoLancamento,
 
-        @Schema(description = "Tipo da mídia", example = "CD")
+        @Schema(description = "Tipo da mídia",
+                example = "CD",
+                allowableValues = {"CD", "VINIL", "K7", "DVD", "BLURAY"})
         String tipoMidia
 ) {}
