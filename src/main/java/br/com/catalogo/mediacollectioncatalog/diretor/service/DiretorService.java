@@ -23,6 +23,14 @@ public class DiretorService {
     @Transactional
     public DiretorResponseDTO cadastrarDiretor(DiretorRequestDTO dto){
 
+        repository.findByNome(dto.nome())
+                .ifPresent(d -> {
+                    throw new ResponseStatusException(
+                            HttpStatus.CONFLICT,
+                            "Diretor já cadastrado com o nome: " + dto.nome()
+                    );
+                });
+
         Diretor diretor = DiretorMapper.toEntity(dto);
 
         Diretor diretorSalvo = repository.save(diretor);
