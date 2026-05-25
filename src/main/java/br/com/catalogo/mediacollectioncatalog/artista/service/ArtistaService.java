@@ -6,6 +6,7 @@ import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.dtos.ArtistaResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.artista.mapper.ArtistaMapper;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,17 @@ public class ArtistaService {
 
     private final ArtistaRepository repository;
 
+    @Transactional
     public ArtistaResponseDTO cadastrarArtista(ArtistaRequestDTO dto){
+
+
+        repository.findByNome(dto.nome())
+                .ifPresent(d -> {
+                    throw new ResponseStatusException(
+                            HttpStatus.CONFLICT,
+                            "Artista já cadastrado com o nome: " + dto.nome()
+                    );
+                });
 
         Artista artista = ArtistaMapper.toEntity(dto);
 
@@ -28,6 +39,7 @@ public class ArtistaService {
         return ArtistaMapper.toDTO(artistaSalvo);
     }
 
+    @Transactional
     public ArtistaResponseDTO atualizar(Long id, ArtistaRequestDTO dto) {
 
         Artista artista = repository.findById(id)
@@ -45,6 +57,7 @@ public class ArtistaService {
         return ArtistaMapper.toDTO(atualizado);
     }
 
+    @Transactional
     public void deletar(Long id) {
 
         Artista artista = repository.findById(id)
