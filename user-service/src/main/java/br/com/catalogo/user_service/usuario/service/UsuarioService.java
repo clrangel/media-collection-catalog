@@ -47,4 +47,14 @@ public class UsuarioService {
         // 4. Retorna o DTO de resposta
         return mapper.toDTO(usuarioSalvo);
     }
+
+    @Transactional
+    public void deletarUsuario(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Usuário não encontrado com o ID: " + id
+            );
+        }
+        repository.deleteById(id);
+    }
 }

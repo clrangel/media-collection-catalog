@@ -46,4 +46,14 @@ public class UsuarioController {
         return ResponseEntity.ok(atualizado);
     }
 
+
+    @Operation(
+            summary = "Deletar Usuário",
+            description = "Remove um Usuário do sistema com base no ID informado"
+    )
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id){
+        service.deletarUsuario(id);
+        return ResponseEntity.noContent().build();
+    }
 }
