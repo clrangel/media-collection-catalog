@@ -56,4 +56,18 @@ public class UsuarioController {
         service.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @Operation(
+            summary = "Buscar usuário por ID",
+            description = "Retorna os dados de um usuário com base no ID informado"
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(
+            @PathVariable Long id) {
+
+        UsuarioResponseDTO usuario = service.buscarUsuarioPorId(id);
+
+        return ResponseEntity.ok(usuario);
+    }
 }

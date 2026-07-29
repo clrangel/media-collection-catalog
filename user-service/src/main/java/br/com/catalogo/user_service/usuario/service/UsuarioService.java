@@ -57,4 +57,16 @@ public class UsuarioService {
         }
         repository.deleteById(id);
     }
+
+    @Transactional
+    public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
+
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Usuário não encontrado com o ID: " + id
+                ));
+
+        return mapper.toDTO(usuario);
+    }
 }
