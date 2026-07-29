@@ -3,6 +3,7 @@ package br.com.catalogo.user_service.usuario.mapper;
 import br.com.catalogo.user_service.usuario.domain.Usuario;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioRequestDTO;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioResponseDTO;
+import br.com.catalogo.user_service.usuario.dtos.UsuarioResumoDTO;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -18,6 +19,8 @@ public interface UsuarioMapper {
     UsuarioResponseDTO toDTO(Usuario usuario);
 
     List<UsuarioResponseDTO> toDTOList(List<Usuario> usuarios);
+
+    UsuarioResumoDTO toResumoDTO(Usuario usuario);
 
     // Atualiza um usuário existente com dados do DTO
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

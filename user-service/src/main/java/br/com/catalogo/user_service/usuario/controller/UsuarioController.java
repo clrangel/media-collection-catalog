@@ -2,6 +2,7 @@ package br.com.catalogo.user_service.usuario.controller;
 
 import br.com.catalogo.user_service.usuario.dtos.UsuarioRequestDTO;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioResponseDTO;
+import br.com.catalogo.user_service.usuario.dtos.UsuarioResumoDTO;
 import br.com.catalogo.user_service.usuario.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -84,5 +85,19 @@ public class UsuarioController {
         List<UsuarioResponseDTO> usuarios = service.buscarTodosUsuarios();
 
         return ResponseEntity.ok(usuarios);
+    }
+
+
+    @Operation(
+            summary = "Buscar usuário por email",
+            description = "Retorna os dados básicos de um usuário com base no email informado"
+    )
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UsuarioResumoDTO> buscarUsuarioPorEmail(
+            @PathVariable String email) {
+
+        UsuarioResumoDTO usuario = service.buscarUsuarioPorEmail(email);
+
+        return ResponseEntity.ok(usuario);
     }
 }

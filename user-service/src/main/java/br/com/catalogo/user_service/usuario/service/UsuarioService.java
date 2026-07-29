@@ -3,6 +3,7 @@ package br.com.catalogo.user_service.usuario.service;
 import br.com.catalogo.user_service.usuario.domain.Usuario;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioRequestDTO;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioResponseDTO;
+import br.com.catalogo.user_service.usuario.dtos.UsuarioResumoDTO;
 import br.com.catalogo.user_service.usuario.mapper.UsuarioMapper;
 import br.com.catalogo.user_service.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -78,5 +79,17 @@ public class UsuarioService {
         List<Usuario> usuarios = repository.findAll();
 
         return mapper.toDTOList(usuarios);
+    }
+
+    @Transactional
+    public UsuarioResumoDTO buscarUsuarioPorEmail(String email) {
+
+        Usuario usuario = repository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Usuário não encontrado com o email: " + email
+                ));
+
+        return mapper.toResumoDTO(usuario);
     }
 }
