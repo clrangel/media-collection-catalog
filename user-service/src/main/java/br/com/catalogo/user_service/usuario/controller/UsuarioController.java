@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(
         name = "Usuários",
         description = "Operações relacionadas ao gerenciamento de usuários")
@@ -69,5 +71,18 @@ public class UsuarioController {
         UsuarioResponseDTO usuario = service.buscarUsuarioPorId(id);
 
         return ResponseEntity.ok(usuario);
+    }
+
+
+    @Operation(
+            summary = "Listar todos os usuários",
+            description = "Retorna uma lista com todos os usuários cadastrados no sistema"
+    )
+    @GetMapping
+    public ResponseEntity<List<UsuarioResponseDTO>> buscarTodosUsuarios() {
+
+        List<UsuarioResponseDTO> usuarios = service.buscarTodosUsuarios();
+
+        return ResponseEntity.ok(usuarios);
     }
 }

@@ -8,12 +8,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
     Usuario toEntity(UsuarioRequestDTO dto);
 
     UsuarioResponseDTO toDTO(Usuario usuario);
+
+    List<UsuarioResponseDTO> toDTOList(List<Usuario> usuarios);
 
     // Atualiza um usuário existente com dados do DTO
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

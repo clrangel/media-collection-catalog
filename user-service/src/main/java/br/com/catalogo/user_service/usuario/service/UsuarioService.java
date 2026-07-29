@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
@@ -68,5 +70,13 @@ public class UsuarioService {
                 ));
 
         return mapper.toDTO(usuario);
+    }
+
+    @Transactional
+    public List<UsuarioResponseDTO> buscarTodosUsuarios() {
+
+        List<Usuario> usuarios = repository.findAll();
+
+        return mapper.toDTOList(usuarios);
     }
 }
