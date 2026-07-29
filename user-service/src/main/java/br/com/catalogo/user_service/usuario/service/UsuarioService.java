@@ -6,7 +6,7 @@ import br.com.catalogo.user_service.usuario.dtos.UsuarioResponseDTO;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioResumoDTO;
 import br.com.catalogo.user_service.usuario.mapper.UsuarioMapper;
 import br.com.catalogo.user_service.usuario.repository.UsuarioRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ public class UsuarioService {
 
     private final UsuarioMapper mapper;
 
+    @Transactional
     public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO dto){
 
         Usuario usuario = mapper.toEntity(dto);
@@ -61,7 +62,7 @@ public class UsuarioService {
         repository.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
 
         Usuario usuario = repository.findById(id)
@@ -73,7 +74,7 @@ public class UsuarioService {
         return mapper.toDTO(usuario);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UsuarioResponseDTO> buscarTodosUsuarios() {
 
         List<Usuario> usuarios = repository.findAll();
@@ -81,7 +82,7 @@ public class UsuarioService {
         return mapper.toDTOList(usuarios);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UsuarioResumoDTO buscarUsuarioPorEmail(String email) {
 
         Usuario usuario = repository.findByEmail(email)
