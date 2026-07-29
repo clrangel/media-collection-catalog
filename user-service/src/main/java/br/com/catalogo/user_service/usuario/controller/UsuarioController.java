@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(
         name = "Usuários",
@@ -34,4 +31,19 @@ public class UsuarioController {
         UsuarioResponseDTO usuarioCriado = service.cadastrarUsuario(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
     }
+
+
+    @Operation(
+            summary = "Atualizar usuário",
+            description = "Atualiza os dados de um usuário existente no sistema com base no ID informado"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(
+            @PathVariable Long id,
+            @Valid @RequestBody UsuarioRequestDTO dto) {
+
+        UsuarioResponseDTO atualizado = service.atualizarUsuario(id, dto);
+        return ResponseEntity.ok(atualizado);
+    }
+
 }

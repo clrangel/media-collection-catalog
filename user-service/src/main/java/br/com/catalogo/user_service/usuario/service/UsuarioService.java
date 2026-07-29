@@ -5,8 +5,11 @@ import br.com.catalogo.user_service.usuario.dtos.UsuarioRequestDTO;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioResponseDTO;
 import br.com.catalogo.user_service.usuario.mapper.UsuarioMapper;
 import br.com.catalogo.user_service.usuario.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +25,26 @@ public class UsuarioService {
 
         Usuario usuarioSalvo = repository.save(usuario);
 
+        return mapper.toDTO(usuarioSalvo);
+    }
+
+    @Transactional
+    public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO dto) {
+
+        // 1. Busca o usuário existente no banco
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Usuário não encontrado com o ID: " + id
+                ));
+
+        // 2. Atualiza apenas os campos vindos do DTO
+        // Não recria o objeto, apenas modifica o existente
+        mapper.updateFromDto(dto, usuario);
+
+        // 3. Salva o objeto atualizado
+        Usuario usuarioSalvo = repository.save(usuario);
+
+        // 4. Retorna o DTO de resposta
         return mapper.toDTO(usuarioSalvo);
     }
 }
