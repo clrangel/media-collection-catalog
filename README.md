@@ -17,7 +17,7 @@ Esta estratégia permite demonstrar não apenas a implementação de funcionalid
 
 ## 🏗️ Diagrama de Arquitetura
 
-A imagem abaixo representa a visão atual da arquitetura da plataforma e sua evolução para uma abordagem baseada em microsserviços. Neste primeiro momento, a solução está sendo estruturada em torno de dois serviços principais: o Media Catalog Service, responsável pelo gerenciamento do catálogo de itens colecionáveis, e o futuro User Service, responsável pelo gerenciamento de usuários e autenticação.
+A imagem abaixo representa a visão atual da arquitetura da plataforma e sua evolução para uma abordagem baseada em microsserviços. Neste primeiro momento, a solução está sendo estruturada em torno de dois serviços principais: o Media Catalog Service, responsável pelo gerenciamento do catálogo de itens colecionáveis, e o User Service, responsável pelo gerenciamento de usuários.
 
 A arquitetura também prevê a adoção de componentes de infraestrutura, como API Gateway e Service Registry, permitindo a evolução gradual da solução para um ambiente distribuído, escalável e de fácil manutenção.
 
@@ -97,11 +97,12 @@ Evoluções planejadas para o projeto:
 - [x] Implementação das entidades e relacionamentos do domínio.
 - [x] Criação de DTOs e mapeamentos utilizando MapStruct.
 - [x] Implementação de validações e tratamento de exceções.
-- [ ] Migração da arquitetura monolítica para microsserviços.
-- [ ] Criação do User Service para gerenciamento de usuários e autenticação.
+- [x] Migração da arquitetura monolítica para microsserviços.
+- [x] Criação do User Service para gerenciamento de usuários.
 - [ ] Implementação do API Gateway.
 - [ ] Implementação do Service Registry para descoberta dos serviços.
 - [ ] Comunicação entre serviços utilizando mensageria.
+- [ ] Implementação de autenticação utilizando Spring Security e JWT.
 - [ ] Containerização completa da aplicação utilizando Docker.
 - [ ] Orquestração dos serviços utilizando Kubernetes.
 
