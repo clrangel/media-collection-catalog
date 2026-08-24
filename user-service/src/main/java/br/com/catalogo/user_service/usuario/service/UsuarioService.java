@@ -6,6 +6,7 @@ import br.com.catalogo.user_service.usuario.dtos.UsuarioResponseDTO;
 import br.com.catalogo.user_service.usuario.dtos.UsuarioResumoDTO;
 import br.com.catalogo.user_service.usuario.mapper.UsuarioMapper;
 import br.com.catalogo.user_service.usuario.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,14 @@ public class UsuarioService {
 
     private final UsuarioMapper mapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO dto){
 
         Usuario usuario = mapper.toEntity(dto);
+
+        usuario.setSenha(passwordEncoder.encode(dto.senha()));
 
         Usuario usuarioSalvo = repository.save(usuario);
 
