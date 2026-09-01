@@ -18,15 +18,11 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class JwtConfig {
 
-    // Obtém a chave secreta definida no application.properties
-    // através da propriedade: jwt.secret
-    @Value("${jwt.secret}")
-    private String secret;
-
     // Cria o JwtEncoder que será utilizado posteriormente
     // para gerar e assinar nossos tokens JWT.
     @Bean
-    public JwtEncoder jwtEncoder() {
+    public JwtEncoder jwtEncoder(
+            @Value("${jwt.secret}") String secret) {
 
         // Converte a chave secreta em uma chave criptográfica
         // utilizando o algoritmo HMAC SHA-256.
