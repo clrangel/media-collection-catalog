@@ -8,7 +8,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
 import javax.crypto.SecretKey;
@@ -42,5 +44,22 @@ public class JwtConfig {
         // O NimbusJwtEncoder utiliza essa fonte de chaves
         // para assinar os tokens JWT.
         return new NimbusJwtEncoder(jwkSource);
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder(
+            @Value("${jwt.secret}") String secret) {
+
+        // Converte a chave secreta em uma chave criptográfica
+        // utilizando o algoritmo HMAC SHA-256.
+        SecretKey key = new SecretKeySpec(
+                secret.getBytes(StandardCharsets.UTF_8),
+                "HmacSHA256"
+        );
+
+        // Cria o JwtDecoder utilizando a mesma chave secreta.
+        // Essa chave será utilizada para validar a assinatura do JWT.
+        return NimbusJwtDecoder.withSecretKey(key).build();
+
     }
 }
