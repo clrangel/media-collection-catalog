@@ -1,6 +1,8 @@
 package br.com.catalogo.user_service.config;
 
+import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.OctetSequenceKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -35,6 +37,8 @@ public class JwtConfig {
 
         // Transforma nossa SecretKey em uma chave JWK.
         OctetSequenceKey jwk = new OctetSequenceKey.Builder(key)
+                .algorithm(JWSAlgorithm.HS256)
+                .keyUse(KeyUse.SIGNATURE)
                 .build();
 
         // Cria uma fonte de chaves JWK contendo nossa chave.

@@ -3,6 +3,8 @@ package br.com.catalogo.user_service.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -37,9 +39,14 @@ public class AuthService {
                 .expiresAt(Instant.now().plusSeconds(3600))
                 .build();
 
+        // Define o cabeçalho do JWT informando que o token
+        // será assinado utilizando o algoritmo HMAC SHA-256 (HS256).
+        JwsHeader header = JwsHeader.with(MacAlgorithm.HS256)
+                .build();
+
         // Codifica e assina o JWT utilizando o JwtEncoder configurado.
         return jwtEncoder.encode(
-                JwtEncoderParameters.from(claims)
+                JwtEncoderParameters.from(header, claims)
         ).getTokenValue();
     }
 }
