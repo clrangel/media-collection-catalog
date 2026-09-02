@@ -2,6 +2,7 @@ package br.com.catalogo.user_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,8 +20,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        // Permite que qualquer usuário acesse o endpoint de login.
+                        // Login e cadastro de usuário são públicos.
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
 
                         // Todos os demais endpoints exigem autenticação.
                         .anyRequest().authenticated()
