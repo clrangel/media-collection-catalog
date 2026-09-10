@@ -23,6 +23,8 @@ public abstract class Midia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long usuarioId;
+
     @NotNull
     @Size(max = 100)
     @Column(nullable = false, length = 100)

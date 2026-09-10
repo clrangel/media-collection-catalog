@@ -9,6 +9,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDRequestD
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.CDRepository;
+import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,30 +27,38 @@ public class CDService {
     private final ArtistaRepository artistaRepository;
     private final CDMapper mapper;
 
+    private final AuthenticatedUserService authenticatedUserService;
+
     @Transactional
     public CDResponseDTO cadastrarCD(CDRequestDTO dto){
 
         // 1. Converter DTO → Entity
         CD cd = mapper.toEntity(dto);
 
-        // 2. Buscar artista
+        // 2. Recuperar o ID do usuário autenticado
+        Long usuarioId = authenticatedUserService.getUserId();
+
+        // 3. Associar o CD ao usuário autenticado
+        cd.setUsuarioId(usuarioId);
+
+        // 4. Buscar artista
         Artista artista = artistaRepository.findById(dto.artistaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Artista não encontrado com o ID: " + dto.artistaId()
                 ));
 
-        // 3. Setar artista
+        // 5. Setar artista
         cd.setArtista(artista);
 
-        // 4. Adiciona Faixas <-Parse
+        // 6. Adiciona Faixas <-Parse
         List<Faixa> faixas = parseFaixas(dto.faixasTexto(), cd);
         cd.setFaixas(faixas);
 
-        // 5. Salvar
+        // 7. Salvar
         CD cdSalvo = repository.save(cd);
 
-        // 6. Converter para DTO
+        // 8. Converter para DTO
         return mapper.toDTO(cdSalvo);
     }
 
