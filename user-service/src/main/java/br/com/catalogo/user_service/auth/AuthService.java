@@ -1,5 +1,7 @@
 package br.com.catalogo.user_service.auth;
 
+import br.com.catalogo.user_service.usuario.domain.Usuario;
+import br.com.catalogo.user_service.usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +22,8 @@ public class AuthService {
 
     private final JwtEncoder jwtEncoder;
 
+    private final UsuarioRepository usuarioRepository;
+
     public String authenticate(LoginRequest request) {
 
         // Cria o objeto contendo as credenciais informadas no login.
@@ -32,9 +36,17 @@ public class AuthService {
         // Delega ao Spring Security a responsabilidade de autenticar o usuário.
         authenticationManager.authenticate(authenticationToken);
 
+        // Busca o usuário autenticado pelo e-mail informado no login.
+        // O ID recuperado será utilizado posteriormente para identificá-lo no JWT.
+        Usuario usuario = usuarioRepository.findByEmail(request.email())
+                .orElseThrow(() -> new IllegalStateException(
+                        "Usuário não encontrado após autenticação."
+                ));
+
         // Gera o JWT após a autenticação bem-sucedida.
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(request.email())
+                .claim("userId", usuario.getId())
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(3600))
                 .build();
