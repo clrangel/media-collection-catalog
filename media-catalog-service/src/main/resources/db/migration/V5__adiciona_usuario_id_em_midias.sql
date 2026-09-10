@@ -1,0 +1,2 @@
+ALTER TABLE midias
+ADD COLUMN usuario_id BIGINT;
