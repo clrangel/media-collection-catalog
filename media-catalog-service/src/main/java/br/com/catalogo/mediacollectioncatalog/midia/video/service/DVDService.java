@@ -8,6 +8,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDRequestD
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.mapstruct.DVDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.video.repository.DVDRepository;
+import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class DVDService {
     private final DVDRepository repository;
     private final DiretorRepository diretorRepository;
     private final DVDMapper mapper;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Transactional
     public DVDResponseDTO cadastrarDVD(DVDRequestDTO dto){
@@ -31,11 +33,17 @@ public class DVDService {
         // O MapStruct converte automaticamente os campos simples
         DVD dvd = mapper.toEntity(dto);
 
-        // 2. Buscar todos os diretores pelos IDs enviados no DTO
+        // 2. Recuperar o ID do usuário autenticado
+        Long usuarioId = authenticatedUserService.getUserId();
+
+        // 3. Associar o DVD ao usuário autenticado
+        dvd.setUsuarioId(usuarioId);
+
+        // 4. Buscar todos os diretores pelos IDs enviados no DTO
         // O método findAllById retorna uma lista de diretores encontrados
         List<Diretor> diretores = diretorRepository.findAllById(dto.diretoresIds());
 
-        // 3. Validar se todos os diretores existem
+        // 5. Validar se todos os diretores existem
         // Se a quantidade encontrada for diferente da enviada,
         // significa que algum ID não existe no banco
         if (diretores.size() != dto.diretoresIds().size()) {
@@ -45,16 +53,16 @@ public class DVDService {
             );
         }
 
-        // 4. Associar os diretores ao DVD
+        // 6. Associar os diretores ao DVD
         // Como o relacionamento é ManyToMany,
         // basta adicionar a lista de diretores na entidade
         dvd.setDiretores(diretores);
 
-        // 5. Salvar o DVD no banco
+        // 7. Salvar o DVD no banco
         // O Hibernate persiste a entidade e a tabela de relacionamento
         DVD dvdSalvo = repository.save(dvd);
 
-        // 6. Converter Entity → ResponseDTO
+        // 8. Converter Entity → ResponseDTO
         // O mapper transforma a entidade no retorno da API
         return mapper.toDTO(dvdSalvo);
     }
