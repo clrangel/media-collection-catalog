@@ -7,6 +7,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayRe
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.mapstruct.BlurayMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.video.repository.BlurayRepository;
+import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class BlurayService {
     private final BlurayRepository repository;
     private final DiretorRepository diretorRepository;
     private final BlurayMapper mapper;
+    private final AuthenticatedUserService authenticatedUserService;
 
 
     @Transactional
@@ -31,11 +33,17 @@ public class BlurayService {
         // O MapStruct converte automaticamente os campos simples
         Bluray bluray = mapper.toEntity(dto);
 
-        // 2. Buscar todos os diretores pelos IDs enviados no DTO
+        // 2. Recuperar o ID do usuário autenticado
+        Long usuarioId = authenticatedUserService.getUserId();
+
+        // 3. Associar o Bluray ao usuário autenticado
+        bluray.setUsuarioId(usuarioId);
+
+        // 4. Buscar todos os diretores pelos IDs enviados no DTO
         // O método findAllById retorna uma lista de diretores encontrados
         List<Diretor> diretores = diretorRepository.findAllById(dto.diretoresIds());
 
-        // 3. Validar se todos os diretores existem
+        // 5. Validar se todos os diretores existem
         // Se a quantidade encontrada for diferente da enviada,
         // significa que algum ID não existe no banco
         if (diretores.size() != dto.diretoresIds().size()) {
@@ -45,16 +53,16 @@ public class BlurayService {
             );
         }
 
-        // 4. Associar os diretores ao Bluray
+        // 6. Associar os diretores ao Bluray
         // Como o relacionamento é ManyToMany,
         // basta adicionar a lista de diretores na entidade
         bluray.setDiretores(diretores);
 
-        // 5. Salvar o Bluray no banco
+        // 7. Salvar o Bluray no banco
         // O Hibernate persiste a entidade e a tabela de relacionamento
         Bluray bluraySalvo = repository.save(bluray);
 
-        // 6. Converter Entity → ResponseDTO
+        // 8. Converter Entity → ResponseDTO
         // O mapper transforma a entidade no retorno da API
         return mapper.toDTO(bluraySalvo);
     }
