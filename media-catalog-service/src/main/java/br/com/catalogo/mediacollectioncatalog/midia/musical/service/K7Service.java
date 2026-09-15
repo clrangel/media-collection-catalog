@@ -9,6 +9,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.k7.K7RequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.k7.K7ResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.K7Mapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.K7Repository;
+import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class K7Service {
     private final K7Repository repository;
     private final ArtistaRepository artistaRepository;
     private final K7Mapper mapper;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Transactional
     public K7ResponseDTO cadastrarK7(K7RequestDTO dto){
@@ -32,24 +34,30 @@ public class K7Service {
         // 1. Converter DTO → Entity
         K7 k7 = mapper.toEntity(dto);
 
-        // 2. Buscar artista
+        // 2. Recuperar o ID do usuário autenticado
+        Long usuarioId = authenticatedUserService.getUserId();
+
+        // 3. Associar o K7 ao usuário autenticado
+        k7.setUsuarioId(usuarioId);
+
+        // 4. Buscar artista
         Artista artista = artistaRepository.findById(dto.artistaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Artista não encontrado com o ID: " + dto.artistaId()
                 ));
 
-        // 3. Setar artista
+        // 5. Setar artista
         k7.setArtista(artista);
 
-        // 4. Adiciona Faixas <-Parse
+        // 6. Adiciona Faixas <-Parse
         List<Faixa> faixas = parseFaixas(dto.faixasTexto(), k7);
         k7.setFaixas(faixas);
 
-        // 5. Salvar
+        // 7. Salvar
         K7 k7Salvo = repository.save(k7);
 
-        // 6. Converter para DTO
+        // 8. Converter para DTO
         return mapper.toDTO(k7Salvo);
     }
 
