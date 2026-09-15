@@ -9,6 +9,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRe
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.VinilMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.VinilRepository;
+import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class VinilService {
     private final VinilRepository repository;
     private final ArtistaRepository artistaRepository;
     private final VinilMapper mapper;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Transactional
     public VinilResponseDTO cadastrarVinil(VinilRequestDTO dto){
@@ -32,24 +34,30 @@ public class VinilService {
         // 1. Converter DTO → Entity
         Vinil vinil = mapper.toEntity(dto);
 
-        // 2. Buscar artista
+        // 2. Recuperar o ID do usuário autenticado
+        Long usuarioId = authenticatedUserService.getUserId();
+
+        // 3. Associar o Vinil ao usuário autenticado
+        vinil.setUsuarioId(usuarioId);
+
+        // 4. Buscar artista
         Artista artista = artistaRepository.findById(dto.artistaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Artista não encontrado com o ID: " + dto.artistaId()
                 ));
 
-        // 3. Setar artista
+        // 5. Setar artista
         vinil.setArtista(artista);
 
-        // 4. Adiciona Faixas <-Parse
+        // 6. Adiciona Faixas <-Parse
         List<Faixa> faixas = parseFaixas(dto.faixasTexto(), vinil);
         vinil.setFaixas(faixas);
 
-        // 5. Salvar
+        // 7. Salvar
         Vinil vinilSalvo = repository.save(vinil);
 
-        // 6. Converter para DTO
+        // 8. Converter para DTO
         return mapper.toDTO(vinilSalvo);
     }
 
