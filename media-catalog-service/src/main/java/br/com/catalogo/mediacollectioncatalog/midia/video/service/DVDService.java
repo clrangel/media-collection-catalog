@@ -9,6 +9,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDResponse
 import br.com.catalogo.mediacollectioncatalog.midia.video.mapstruct.DVDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.video.repository.DVDRepository;
 import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
+import br.com.catalogo.mediacollectioncatalog.security.OwnershipService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,9 @@ public class DVDService {
     private final DVDRepository repository;
     private final DiretorRepository diretorRepository;
     private final DVDMapper mapper;
+
     private final AuthenticatedUserService authenticatedUserService;
+    private final OwnershipService ownershipService;
 
     @Transactional
     public DVDResponseDTO cadastrarDVD(DVDRequestDTO dto){
@@ -77,11 +80,14 @@ public class DVDService {
                         "DVD não encontrado com o ID: " + id
                 ));
 
-        // 2. Atualiza os campos simples
+        // 2. Valida se o usuário autenticado é o proprietário do DVD
+        ownershipService.validarProprietario(dvd.getUsuarioId());
+
+        // 3. Atualiza os campos simples
         // titulo, sinopse, genero, etc.
         mapper.updateFromDto(dto, dvd);
 
-        // 3. Atualiza os diretores manualmente
+        // 4. Atualiza os diretores manualmente
         if (dto.diretoresIds() != null) {
 
             // Busca todos os diretores enviados
@@ -96,10 +102,10 @@ public class DVDService {
             dvd.setDiretores(diretores);
         }
 
-        // 4. Salva atualização
+        // 5. Salva atualização
         DVD dvdAtualizado = repository.save(dvd);
 
-        // 5. Retorna DTO
+        // 6. Retorna DTO
         return mapper.toDTO(dvdAtualizado);
     }
 
