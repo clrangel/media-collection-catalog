@@ -10,6 +10,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.vinildto.VinilRe
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.VinilMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.VinilRepository;
 import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
+import br.com.catalogo.mediacollectioncatalog.security.OwnershipService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,9 @@ public class VinilService {
     private final VinilRepository repository;
     private final ArtistaRepository artistaRepository;
     private final VinilMapper mapper;
+
     private final AuthenticatedUserService authenticatedUserService;
+    private final OwnershipService ownershipService;
 
     @Transactional
     public VinilResponseDTO cadastrarVinil(VinilRequestDTO dto){
@@ -70,11 +73,14 @@ public class VinilService {
                         HttpStatus.NOT_FOUND, "Vinil não encontrado com o ID: " + id
                 ));
 
-        // 2. Atualiza apenas os campos vindos do DTO
+        // 2. Valida se o usuário autenticado é o proprietário do Vinil
+        ownershipService.validarProprietario(vinil.getUsuarioId());
+
+        // 3. Atualiza apenas os campos vindos do DTO
         // Não recria o objeto, apenas modifica o existente
         mapper.updateFromDto(dto, vinil);
 
-        // 3. Atualiza o artista manualmente (mapper ignora esse campo)
+        // 4. Atualiza o artista manualmente (mapper ignora esse campo)
         Artista artista = artistaRepository.findById(dto.artistaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Artista não encontrado com o ID: " + dto.artistaId()
@@ -82,7 +88,7 @@ public class VinilService {
 
         vinil.setArtista(artista);
 
-        // 4. Atualizar faixas (se vier no DTO)
+        // 5. Atualizar faixas (se vier no DTO)
         if (dto.faixasTexto() != null) {
             vinil.getFaixas().clear();
 
@@ -91,10 +97,10 @@ public class VinilService {
             vinil.getFaixas().addAll(novasFaixas);
         }
 
-        // 5. Salva o objeto atualizado
+        // 6. Salva o objeto atualizado
         Vinil vinilSalvo = repository.save(vinil);
 
-        // 6. Retorna o DTO de resposta
+        // 7. Retorna o DTO de resposta
         return mapper.toDTO(vinilSalvo);
     }
 
