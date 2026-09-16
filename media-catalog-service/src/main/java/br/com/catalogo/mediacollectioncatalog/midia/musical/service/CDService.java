@@ -10,6 +10,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.cddto.CDResponse
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.CDMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.repository.CDRepository;
 import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
+import br.com.catalogo.mediacollectioncatalog.security.OwnershipService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class CDService {
     private final CDMapper mapper;
 
     private final AuthenticatedUserService authenticatedUserService;
+    private final OwnershipService ownershipService;
 
     @Transactional
     public CDResponseDTO cadastrarCD(CDRequestDTO dto){
@@ -81,11 +83,14 @@ public class CDService {
                         HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
                 ));
 
-        // 2. Atualiza apenas os campos vindos do DTO
+        // 2. Valida se o usuário autenticado é o proprietário do CD
+        ownershipService.validarProprietario(cd.getUsuarioId());
+
+        // 3. Atualiza apenas os campos vindos do DTO
         // Não recria o objeto, apenas modifica o existente
         mapper.updateFromDto(dto, cd);
 
-        // 3. Atualiza o artista manualmente (mapper ignora esse campo)
+        // 4. Atualiza o artista manualmente (mapper ignora esse campo)
         Artista artista = artistaRepository.findById(dto.artistaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Artista não encontrado com o ID: " + dto.artistaId()
@@ -93,7 +98,7 @@ public class CDService {
 
         cd.setArtista(artista);
 
-        // 4. Atualizar faixas (se vier no DTO)
+        // 5. Atualizar faixas (se vier no DTO)
         if (dto.faixasTexto() != null) {
             cd.getFaixas().clear();
 
@@ -102,10 +107,10 @@ public class CDService {
             cd.getFaixas().addAll(novasFaixas);
         }
 
-        // 5. Salva o objeto atualizado
+        // 6. Salva o objeto atualizado
         CD cdSalvo = repository.save(cd);
 
-        // 6. Retorna o DTO de resposta
+        // 7. Retorna o DTO de resposta
         return mapper.toDTO(cdSalvo);
     }
 
