@@ -8,6 +8,7 @@ import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayRe
 import br.com.catalogo.mediacollectioncatalog.midia.video.mapstruct.BlurayMapper;
 import br.com.catalogo.mediacollectioncatalog.midia.video.repository.BlurayRepository;
 import br.com.catalogo.mediacollectioncatalog.security.AuthenticatedUserService;
+import br.com.catalogo.mediacollectioncatalog.security.OwnershipService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,9 @@ public class BlurayService {
     private final BlurayRepository repository;
     private final DiretorRepository diretorRepository;
     private final BlurayMapper mapper;
+
     private final AuthenticatedUserService authenticatedUserService;
+    private final OwnershipService ownershipService;
 
 
     @Transactional
@@ -78,11 +81,14 @@ public class BlurayService {
                         "Bluray não encontrado com o ID: " + id
                 ));
 
-        // 2. Atualiza os campos simples
+        // 2. Valida se o usuário autenticado é o proprietário do Bluray
+        ownershipService.validarProprietario(bluray.getUsuarioId());
+
+        // 3. Atualiza os campos simples
         // titulo, sinopse, genero, etc.
         mapper.updateFromDto(dto, bluray);
 
-        // 3. Atualiza os diretores manualmente
+        // 4. Atualiza os diretores manualmente
         if (dto.diretoresIds() != null) {
 
             // Busca todos os diretores enviados
@@ -97,10 +103,10 @@ public class BlurayService {
             bluray.setDiretores(diretores);
         }
 
-        // 4. Salva atualização
+        // 5. Salva atualização
         Bluray blurayAtualizado = repository.save(bluray);
 
-        // 5. Retorna DTO
+        // 6. Retorna DTO
         return mapper.toDTO(blurayAtualizado);
     }
 
