@@ -3,6 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.service;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.diretor.repository.DiretorRepository;
+import br.com.catalogo.mediacollectioncatalog.midia.video.domain.Bluray;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.DVD;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDResponseDTO;
@@ -112,11 +113,19 @@ public class DVDService {
 
     @Transactional
     public void deletarDVD(Long id){
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DVD não encontrado com o ID: " + id
-            );
-        }
-        repository.deleteById(id);
+
+        // 1. Busca o DVD existente no banco
+        DVD dvd = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "DVD não encontrado com o ID: " + id
+                ));
+
+        // 2. Valida se o usuário autenticado é o proprietário do DVD
+        ownershipService.validarProprietario(dvd.getUsuarioId());
+
+        // 3. Exclui o DVD
+        repository.delete(dvd);
     }
 
 
