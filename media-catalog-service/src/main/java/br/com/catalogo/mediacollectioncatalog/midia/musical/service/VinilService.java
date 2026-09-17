@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Vinil;
@@ -106,12 +107,19 @@ public class VinilService {
 
     @Transactional
     public void deletarVinil(Long id){
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Vinil não encontrado com o ID: " + id
-            );
-        }
-        repository.deleteById(id);
+
+        // 1. Busca o Vinil existente no banco
+        Vinil vinil = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Vinil não encontrado com o ID: " + id
+                ));
+
+        // 2. Valida se o usuário autenticado é o proprietário do Vinil
+        ownershipService.validarProprietario(vinil.getUsuarioId());
+
+        // 3. Exclui o Vinil
+        repository.delete(vinil);
     }
 
     public VinilResponseDTO buscarVinilPorId(Long id) {
