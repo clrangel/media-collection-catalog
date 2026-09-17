@@ -66,12 +66,19 @@ public class CDService {
 
     @Transactional
     public void deletarCD(Long id){
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "CD não encontrado com o ID: " + id
-            );
-        }
-        repository.deleteById(id);
+
+        // 1. Busca o CD existente no banco
+        CD cd = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "CD não encontrado com o ID: " + id
+                ));
+
+        // 2. Valida se o usuário autenticado é o proprietário do CD
+        ownershipService.validarProprietario(cd.getUsuarioId());
+
+        // 3. Exclui o CD
+        repository.delete(cd);
     }
 
     @Transactional
