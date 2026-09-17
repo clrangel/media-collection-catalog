@@ -5,6 +5,7 @@ import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaReposito
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.K7;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Vinil;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.k7.K7RequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.dto.k7.K7ResponseDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.mapstruct.K7Mapper;
@@ -106,12 +107,19 @@ public class K7Service {
 
     @Transactional
     public void deletarK7(Long id){
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "K7 não encontrado com o ID: " + id
-            );
-        }
-        repository.deleteById(id);
+
+        // 1. Busca o K7 existente no banco
+        K7 k7 = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "K7 não encontrado com o ID: " + id
+                ));
+
+        // 2. Valida se o usuário autenticado é o proprietário do K7
+        ownershipService.validarProprietario(k7.getUsuarioId());
+
+        // 3. Exclui o K7
+        repository.delete(k7);
     }
 
     public K7ResponseDTO buscarK7PorId(Long id) {
