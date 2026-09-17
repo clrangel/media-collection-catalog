@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.service;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.diretor.repository.DiretorRepository;
+import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.K7;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.Bluray;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayRequestDTO;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayResponseDTO;
@@ -113,11 +114,19 @@ public class BlurayService {
 
     @Transactional
     public void deletarBluray(Long id){
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bluray não encontrado com o ID: " + id
-            );
-        }
-        repository.deleteById(id);
+
+        // 1. Busca o Bluray existente no banco
+        Bluray bluray = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Bluray não encontrado com o ID: " + id
+                ));
+
+        // 2. Valida se o usuário autenticado é o proprietário do Bluray
+        ownershipService.validarProprietario(bluray.getUsuarioId());
+
+        // 3. Exclui o Bluray
+        repository.delete(bluray);
     }
 
 
