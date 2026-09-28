@@ -45,6 +45,15 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 ✔️ Documentação interativa com Swagger/OpenAPI  
 ✔️ Documentação enriquecida com `@Operation` e `@Schema`
 
+### 🔐 Login e Autenticação
+
+✔️ Autenticação de usuários através de JWT  
+✔️ Proteção de endpoints com Spring Security e OAuth2 Resource Server  
+✔️ Identificação do usuário autenticado através do JWT  
+✔️ Associação das mídias cadastradas ao usuário autenticado  
+✔️ Restrição de atualização de mídias ao proprietário  
+✔️ Restrição de exclusão de mídias ao proprietário  
+
 ---
 ## 🎵 Funcionalidades do Domínio Musical
 
@@ -222,15 +231,31 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Documentação com Swagger/OpenAPI
 - Relacionamentos ManyToMany entre entidades
 
+### 🔐 Login e Autenticação
+
+- Autenticação baseada em JWT
+- Proteção de endpoints com Spring Security e OAuth2 Resource Server
+- Identificação do usuário autenticado através do JWT
+- Controle de acesso baseado no proprietário da mídia
+
 ## 🏗️ Tecnologias utilizadas
 
 - Java 21
-- Spring Boot 3.5.x
+- Spring Boot 3.5.12
 - Spring Data JPA
 - PostgreSQL
 - Maven
 - Hibernate / JPA
 - Swagger / OpenAPI
+
+#### 🔐 Login e Autenticação
+
+- Spring Security
+- OAuth2 Resource Server
+
+#### ☁️ Descoberta de Serviços
+
+- Spring Cloud Netflix Eureka
 
 ---
 
@@ -243,6 +268,14 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Lombok
 - MapStruct
 - OpenAPI (Swagger)
+
+#### 🔐 Login e Autenticação
+
+- Spring Security
+- OAuth2 Resource Server
+
+#### ☁️ Descoberta de Serviços
+- Spring Cloud Netflix Eureka
 
 ## 🗄️ Configuração do Banco de Dados
 
