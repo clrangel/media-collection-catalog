@@ -9,17 +9,29 @@ O Media Collection Catalog é uma plataforma voltada para o gerenciamento de col
 
 O projeto foi concebido inicialmente como uma aplicação monolítica para estudo e prática de conceitos fundamentais de desenvolvimento backend com Java e Spring Boot, incluindo modelagem de domínio, arquitetura orientada a domínio (DDD), mapeamento de dados, persistência com JPA/Hibernate e documentação de APIs.
 
-Atualmente, a solução está em processo de evolução para uma arquitetura baseada em microsserviços, adotando uma abordagem incremental e orientada ao domínio. O objetivo é construir uma plataforma escalável e de fácil manutenção, incorporando gradualmente componentes como API Gateway, Service Registry, autenticação com JWT, comunicação entre serviços e mensageria.
+Atualmente, a solução está em processo de evolução para uma arquitetura baseada em microsserviços, seguindo uma abordagem incremental e orientada ao domínio. A primeira etapa dessa evolução resultou na separação do sistema em dois serviços principais: o Media Catalog Service, responsável pelo gerenciamento do catálogo de mídias, e o User Service, responsável pelo gerenciamento de usuários e autenticação.
 
-Esta estratégia permite demonstrar não apenas a implementação de funcionalidades, mas também a capacidade de projetar, evoluir e manter sistemas distribuídos seguindo boas práticas de arquitetura de software.
+A solução também conta com autenticação baseada em JWT, utilizando Spring Security e OAuth2 Resource Server para proteção dos recursos do catálogo. A implementação permite identificar o usuário autenticado e associar as mídias cadastradas ao respectivo usuário, além de controlar o acesso às operações de alteração e exclusão.
+
+A arquitetura continua sendo evoluída gradualmente, com a adoção de componentes como Service Registry, API Gateway e comunicação entre serviços, buscando construir uma plataforma escalável, organizada e de fácil manutenção.
+
+Essa estratégia permite demonstrar não apenas a implementação de funcionalidades, mas também a capacidade de projetar, evoluir e manter sistemas distribuídos seguindo boas práticas de arquitetura de software.
 
 ---
 
 ## 🏗️ Diagrama de Arquitetura
 
-A imagem abaixo representa a visão atual da arquitetura da plataforma e sua evolução para uma abordagem baseada em microsserviços. Neste primeiro momento, a solução está sendo estruturada em torno de dois serviços principais: o Media Catalog Service, responsável pelo gerenciamento do catálogo de itens colecionáveis, e o User Service, responsável pelo gerenciamento de usuários.
+A imagem abaixo representa a visão atual da arquitetura da plataforma e sua evolução para uma abordagem baseada em microsserviços. 
 
-A arquitetura também prevê a adoção de componentes de infraestrutura, como API Gateway e Service Registry, permitindo a evolução gradual da solução para um ambiente distribuído, escalável e de fácil manutenção.
+Atualmente, a solução está estruturada em dois serviços principais:
+
+* **User Service:** responsável pelo gerenciamento de usuários e autenticação.
+* **Media Catalog Service:** responsável pelo gerenciamento do catálogo de mídias físicas.
+
+Os serviços utilizam um **Service Registry**, implementado com Spring Cloud Netflix Eureka, para registro e descoberta dos microsserviços.
+
+A arquitetura também prevê a implementação de um **API Gateway**, que futuramente será utilizado como ponto único de entrada para as requisições da aplicação, permitindo centralizar o acesso aos diferentes serviços.
+
 
 <div  align="center">
   <img src="./assets/diagrams/architecture-diagram.png" alt="Diagrama de Arquitetura" width="900"/>
@@ -29,23 +41,21 @@ A arquitetura também prevê a adoção de componentes de infraestrutura, como A
 
 ## 🧩 Microsserviços
 
-O projeto está sendo evoluído para uma arquitetura baseada em microsserviços, com o objetivo de melhorar a organização do domínio, a separação de responsabilidades e permitir uma evolução mais escalável da aplicação.
+O projeto está sendo evoluído para uma arquitetura baseada em microsserviços, com o objetivo de melhorar a organização do domínio, a separação de responsabilidades e permitir a evolução independente dos serviços.
 
-A primeira etapa dessa migração contempla a divisão do sistema em dois serviços principais:
+Atualmente, a solução está estruturada em dois microsserviços principais:
 
-* **User Service:** responsável pelo gerenciamento de usuários, autenticação e informações relacionadas aos usuários da plataforma.
+* **User Service:** responsável pelo gerenciamento de usuários e autenticação, incluindo a geração dos tokens JWT utilizados para autenticar as requisições.
 
-* **Media Catalog Service:** responsável pelo gerenciamento do catálogo de mídias, contendo informações sobre CDs, vinis, K7s, DVDs, Blu-rays, artistas, diretores e demais entidades do domínio.
+* **Media Catalog Service:** responsável pelo gerenciamento do catálogo de mídias físicas, incluindo CDs, vinis, K7s, DVDs, Blu-rays, artistas e diretores. O serviço também controla a associação das mídias aos usuários autenticados e as permissões de alteração e exclusão.
 
-Essa separação permite que o catálogo de mídias seja independente dos usuários, possibilitando que diferentes colecionadores possam adicionar os mesmos itens às suas coleções sem a necessidade de duplicar os dados do catálogo.
+A comunicação e a infraestrutura da arquitetura estão sendo estruturadas de forma incremental, utilizando componentes como:
 
-A comunicação entre os serviços será realizada seguindo os princípios de uma arquitetura distribuída, utilizando componentes como:
-
-* **API Gateway:** ponto único de entrada para as requisições da aplicação.
-* **Service Registry:** responsável pelo registro e descoberta dos serviços disponíveis.
+* **Service Registry:** responsável pelo registro e descoberta dos serviços disponíveis, utilizando Spring Cloud Netflix Eureka.
+* **API Gateway:** previsto como ponto único de entrada para as requisições da aplicação.
 * **Bancos de dados independentes:** cada microsserviço possui sua própria base de dados, garantindo maior autonomia e isolamento entre os domínios.
 
-A arquitetura foi planejada de forma incremental, permitindo a evolução futura com a inclusão de novos serviços conforme as necessidades do sistema.
+A arquitetura foi planejada de forma incremental, permitindo a inclusão de novos serviços e componentes conforme a evolução do projeto.
 
 ---
 
@@ -56,7 +66,7 @@ As tecnologias utilizadas no desenvolvimento do projeto foram escolhidas com foc
 ### Backend
 
 * **Java 21** — Linguagem principal utilizada no desenvolvimento da aplicação.
-* **Spring Boot 3** — Framework utilizado para criação da API REST e gerenciamento da aplicação.
+* **Spring Boot 3.5.12** — Framework utilizado para criação da API REST e gerenciamento da aplicação.
 * **Spring Data JPA / Hibernate** — Persistência e mapeamento objeto-relacional das entidades.
 * **Spring Validation** — Validação dos dados recebidos pelas requisições.
 * **Lombok** — Redução de código repetitivo através da geração automática de métodos.
@@ -76,22 +86,29 @@ As tecnologias utilizadas no desenvolvimento do projeto foram escolhidas com foc
 * **Postman** — Testes e validação das APIs REST.
 * **Swagger / OpenAPI** — Documentação e testes dos endpoints da API.
 
-### Arquitetura e Comunicação <small>(Tecnologias previstas para evolução da arquitetura)</small>
+### Arquitetura e Comunicação
 
 * **Microsserviços** — Arquitetura adotada para separação de responsabilidades e evolução independente dos serviços.
-* **Spring Cloud** — Recursos para construção de aplicações distribuídas.
-* **Service Registry** — Registro e descoberta dos serviços da aplicação.
-* **API Gateway** — Gerenciamento do acesso aos microsserviços.
+* **Spring Cloud** — Ecossistema utilizado para recursos de aplicações distribuídas.
+* **Spring Cloud Netflix Eureka** — Service Registry utilizado para registro e descoberta dos microsserviços.
+* **Spring Security** — Framework utilizado para autenticação e proteção dos recursos.
+* **OAuth2 Resource Server** — Configuração utilizada para validação e proteção dos endpoints através de tokens JWT.
+* **JWT** — Autenticação baseada em tokens utilizada para identificação dos usuários entre os serviços.
+* **OpenFeign** — Comunicação síncrona entre serviços prevista para a evolução da arquitetura.
+
+#### Tecnologias previstas para evolução da arquitetura
+
+* **API Gateway** — Componente previsto para centralizar o acesso aos microsserviços.
 
 ### Mensageria
 
-* **RabbitMQ** — Comunicação assíncrona entre serviços através de filas de mensagens.
+* **RabbitMQ** — Tecnologia prevista para comunicação assíncrona entre os serviços através de filas de mensagens.
 
 ---
 
 ## 🗺️ Roadmap
 
-Evoluções planejadas para o projeto:
+Evoluções e etapas do projeto:
 
 - [x] Desenvolvimento da API REST para gerenciamento do catálogo de mídias.
 - [x] Implementação das entidades e relacionamentos do domínio.
@@ -99,11 +116,16 @@ Evoluções planejadas para o projeto:
 - [x] Implementação de validações e tratamento de exceções.
 - [x] Migração da arquitetura monolítica para microsserviços.
 - [x] Criação do User Service para gerenciamento de usuários.
+- [x] Implementação de autenticação utilizando Spring Security e JWT.
+- [x] Proteção dos endpoints do Media Catalog Service com OAuth2 Resource Server.
+- [x] Identificação do usuário autenticado através do JWT.
+- [x] Associação das mídias cadastradas ao usuário autenticado.
+- [x] Implementação de controle de propriedade para alteração e exclusão de mídias.
+- [x] Implementação do Service Registry para descoberta dos serviços utilizando Eureka.
 - [ ] Implementação do API Gateway.
-- [ ] Implementação do Service Registry para descoberta dos serviços.
-- [ ] Comunicação entre serviços utilizando mensageria.
-- [ ] Implementação de autenticação utilizando Spring Security e JWT.
-- [ ] Containerização completa da aplicação utilizando Docker.
+- [x] Comunicação entre serviços utilizando OpenFeign.
+- [ ] Comunicação assíncrona entre serviços utilizando RabbitMQ.
+- [ ] Containerização da aplicação utilizando Docker.
 - [ ] Orquestração dos serviços utilizando Kubernetes.
 
 ---
@@ -114,26 +136,30 @@ Evoluções planejadas para o projeto:
 
 Antes de executar o projeto, certifique-se de possuir:
 
-* **Java 21** — Ambiente de execução da aplicação.
-* **PostgreSQL** — Banco de dados utilizado pela aplicação.
+* **Java 21** — Ambiente de execução das aplicações.
+* **PostgreSQL** — Banco de dados utilizado pelos microsserviços.
+* **Git** — Para clonar o repositório.
 
-### Configuração do banco de dados
+### Configuração dos bancos de dados
 
-Crie um banco PostgreSQL e configure as informações de conexão no arquivo:
+Cada microsserviço possui sua própria base de dados, seguindo o princípio de isolamento de dados entre os serviços.
 
-```text
-application.properties
-```
+Crie os bancos de dados PostgreSQL:
+
+* `collection_catalog_db` — utilizado pelo Media Catalog Service.
+* `user_service_db` — utilizado pelo User Service.
+
+As informações de conexão devem ser configuradas no arquivo `application.properties` de cada microsserviço.
 
 Exemplo:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/collection_catalog_db
+spring.datasource.url=jdbc:postgresql://localhost:5432/NOME_DO_BANCO
 spring.datasource.username=SEU_LOGIN
 spring.datasource.password=SUA_SENHA
 ```
 
-> O projeto possui suporte ao **Flyway Migration** para versionamento futuro da estrutura do banco de dados.
+> O projeto possui suporte ao **Flyway Migration** para versionamento da estrutura dos bancos de dados.
 
 ### Clonando o repositório
 
