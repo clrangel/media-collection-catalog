@@ -15,6 +15,10 @@ Atualmente o serviço é responsável por:
 - Exclusão de usuários;
 - Persistência dos dados dos usuários.
 
+### 🔐 Login e Autenticação
+- Autenticação de usuários;
+- Geração de tokens JWT para usuários autenticados.
+
 ## 🛠️ Tecnologias utilizadas
 
 - Java 21
@@ -29,6 +33,17 @@ Atualmente o serviço é responsável por:
 - MapStruct
 - Maven
 - Springdoc OpenAPI
+
+### 🔐 Login e Autenticação
+
+- Spring Security
+- OAuth2 Resource Server
+
+### ☁️ Comunicação e Descoberta de Serviços
+
+- Spring Cloud Netflix Eureka
+- Spring Cloud OpenFeign
+
 
 ## 🗄️ Banco de dados
 
@@ -50,9 +65,17 @@ A entidade `Usuario` possui os seguintes atributos:
 - `senha`
 - `dataCadastro`
 
+A senha do usuário é armazenada de forma segura utilizando criptografia antes de ser persistida no banco de dados.
+
 O campo `dataCadastro` é preenchido automaticamente no momento da persistência da entidade.
 
 ## 🌐 Endpoints disponíveis
+
+### 🔐 Login e Autenticação
+
+| Método | Endpoint | Descrição |
+|---|---|---|
+| POST | `/auth/login` | Autentica o usuário e retorna um token JWT |
 
 ### Usuários
 
@@ -64,6 +87,14 @@ O campo `dataCadastro` é preenchido automaticamente no momento da persistência
 | GET | `/usuarios/email/{email}` | Busca dados resumidos do usuário por e-mail |
 | PUT | `/usuarios/{id}` | Atualiza um usuário |
 | DELETE | `/usuarios/{id}` | Remove um usuário |
+
+## 🔐 Login e Autenticação
+
+O serviço é responsável por autenticar os usuários através de e-mail e senha.
+
+Após uma autenticação bem-sucedida, o serviço gera um token JWT contendo as informações necessárias para identificar o usuário autenticado, incluindo seu ID através do claim `userId`.
+
+O token também possui informações relacionadas à sua emissão e expiração, permitindo que os demais microsserviços validem sua autenticidade e utilizem a identificação do usuário durante as requisições protegidas.
 
 ## ▶️ Executando o projeto
 
@@ -77,6 +108,8 @@ O campo `dataCadastro` é preenchido automaticamente no momento da persistência
 
 Configure as propriedades do banco no arquivo:
 
+`src/main/resources/application.properties`
+
 
 Exemplo:
 
@@ -85,3 +118,15 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/user_service_db
 spring.datasource.username=SEU_LOGIN
 spring.datasource.password=SUA_SENHA
 ```
+
+### Configuração do JWT
+
+O serviço utiliza uma chave secreta para a geração dos tokens JWT.
+
+Configure a propriedade `jwt.secret` no arquivo `src/main/resources/application.properties`.
+
+Exemplo:
+
+```properties
+jwt.secret=SUA_CHAVE_SECRETA
+``` 
