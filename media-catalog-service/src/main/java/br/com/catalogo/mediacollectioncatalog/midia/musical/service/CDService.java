@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
@@ -30,6 +31,8 @@ public class CDService {
 
     private final AuthenticatedUserService authenticatedUserService;
     private final OwnershipService ownershipService;
+
+    private final MidiaEventPublisher midiaEventPublisher;
 
     @Transactional
     public CDResponseDTO cadastrarCD(CDRequestDTO dto){
@@ -60,7 +63,13 @@ public class CDService {
         // 7. Salvar
         CD cdSalvo = repository.save(cd);
 
-        // 8. Converter para DTO
+        // 8. Publicar evento de cadastro do CD no RabbitMQ
+        midiaEventPublisher.publicarMidiaCadastrada(
+                cdSalvo.getId(),
+                usuarioId
+        );
+
+        // 9. Converter para DTO
         return mapper.toDTO(cdSalvo);
     }
 
