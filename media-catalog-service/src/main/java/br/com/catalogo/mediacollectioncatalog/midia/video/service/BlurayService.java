@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.service;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.diretor.repository.DiretorRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.K7;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.Bluray;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.bluraydto.BluRayRequestDTO;
@@ -28,6 +29,8 @@ public class BlurayService {
 
     private final AuthenticatedUserService authenticatedUserService;
     private final OwnershipService ownershipService;
+
+    private final MidiaEventPublisher midiaEventPublisher;
 
 
     @Transactional
@@ -66,7 +69,13 @@ public class BlurayService {
         // O Hibernate persiste a entidade e a tabela de relacionamento
         Bluray bluraySalvo = repository.save(bluray);
 
-        // 8. Converter Entity → ResponseDTO
+        // 8. Publicar evento de cadastro do Bluray no RabbitMQ
+        midiaEventPublisher.publicarMidiaCadastrada(
+                bluraySalvo.getId(),
+                usuarioId
+        );
+
+        // 9. Converter Entity → ResponseDTO
         // O mapper transforma a entidade no retorno da API
         return mapper.toDTO(bluraySalvo);
     }

@@ -3,6 +3,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.service;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.diretor.repository.DiretorRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.Bluray;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.DVD;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDRequestDTO;
@@ -29,6 +30,8 @@ public class DVDService {
 
     private final AuthenticatedUserService authenticatedUserService;
     private final OwnershipService ownershipService;
+
+    private final MidiaEventPublisher midiaEventPublisher;
 
     @Transactional
     public DVDResponseDTO cadastrarDVD(DVDRequestDTO dto){
@@ -66,7 +69,13 @@ public class DVDService {
         // O Hibernate persiste a entidade e a tabela de relacionamento
         DVD dvdSalvo = repository.save(dvd);
 
-        // 8. Converter Entity → ResponseDTO
+        // 8. Publicar evento de cadastro do DVD no RabbitMQ
+        midiaEventPublisher.publicarMidiaCadastrada(
+                dvdSalvo.getId(),
+                usuarioId
+        );
+
+        // 9. Converter Entity → ResponseDTO
         // O mapper transforma a entidade no retorno da API
         return mapper.toDTO(dvdSalvo);
     }
