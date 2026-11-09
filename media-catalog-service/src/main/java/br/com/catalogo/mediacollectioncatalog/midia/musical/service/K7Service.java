@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.K7;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
@@ -32,6 +33,8 @@ public class K7Service {
     private final AuthenticatedUserService authenticatedUserService;
     private final OwnershipService ownershipService;
 
+    private final MidiaEventPublisher midiaEventPublisher;
+
     @Transactional
     public K7ResponseDTO cadastrarK7(K7RequestDTO dto){
 
@@ -61,7 +64,13 @@ public class K7Service {
         // 7. Salvar
         K7 k7Salvo = repository.save(k7);
 
-        // 8. Converter para DTO
+        // 8. Publicar evento de cadastro do K7 no RabbitMQ
+        midiaEventPublisher.publicarMidiaCadastrada(
+                k7Salvo.getId(),
+                usuarioId
+        );
+
+        // 9. Converter para DTO
         return mapper.toDTO(k7Salvo);
     }
 

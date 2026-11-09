@@ -2,6 +2,7 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
@@ -32,6 +33,8 @@ public class VinilService {
     private final AuthenticatedUserService authenticatedUserService;
     private final OwnershipService ownershipService;
 
+    private final MidiaEventPublisher midiaEventPublisher;
+
     @Transactional
     public VinilResponseDTO cadastrarVinil(VinilRequestDTO dto){
 
@@ -61,7 +64,13 @@ public class VinilService {
         // 7. Salvar
         Vinil vinilSalvo = repository.save(vinil);
 
-        // 8. Converter para DTO
+        // 8. Publicar evento de cadastro do Vinil no RabbitMQ
+        midiaEventPublisher.publicarMidiaCadastrada(
+                vinilSalvo.getId(),
+                usuarioId
+        );
+
+        // 9. Converter para DTO
         return mapper.toDTO(vinilSalvo);
     }
 
