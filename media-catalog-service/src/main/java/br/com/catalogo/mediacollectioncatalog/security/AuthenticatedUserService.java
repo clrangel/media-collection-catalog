@@ -26,4 +26,17 @@ public class AuthenticatedUserService {
         // Recupera do JWT o ID do usuário armazenado na claim "userId".
         return jwt.getClaim("userId");
     }
+
+    public String getEmail() {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        JwtAuthenticationToken jwtAuthentication =
+                (JwtAuthenticationToken) authentication;
+
+        Jwt jwt = jwtAuthentication.getToken();
+
+        return jwt.getSubject();
+    }
 }
