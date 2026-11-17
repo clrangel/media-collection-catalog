@@ -2,7 +2,9 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.event.NotificacaoCadastroMidia;
 import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.NotificacaoMidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
@@ -33,6 +35,7 @@ public class CDService {
     private final OwnershipService ownershipService;
 
     private final MidiaEventPublisher midiaEventPublisher;
+    private final NotificacaoMidiaEventPublisher notificacaoMidiaEventPublisher;
 
     @Transactional
     public CDResponseDTO cadastrarCD(CDRequestDTO dto){
@@ -69,7 +72,21 @@ public class CDService {
                 usuarioId
         );
 
-        // 9. Converter para DTO
+        // 9. Publicar notificação de cadastro por e-mail
+        notificacaoMidiaEventPublisher.publicarNotificacao(
+                new NotificacaoCadastroMidia(
+                        authenticatedUserService.getEmail(),
+                        cdSalvo.getTitulo(),
+                        cdSalvo.getAnoLancamento(),
+                        "CD",
+                        cdSalvo.getArtista().getNome(),
+                        cdSalvo.getFormatoDisco().name(),
+                        cdSalvo.getTipoCD().name(),
+                        cdSalvo.getDataCadastro()
+                )
+        );
+
+        // 10. Converter para DTO
         return mapper.toDTO(cdSalvo);
     }
 
