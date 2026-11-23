@@ -3,7 +3,9 @@ package br.com.catalogo.mediacollectioncatalog.midia.video.service;
 
 import br.com.catalogo.mediacollectioncatalog.diretor.domain.Diretor;
 import br.com.catalogo.mediacollectioncatalog.diretor.repository.DiretorRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.event.NotificacaoCadastroMidia;
 import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.NotificacaoMidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.Bluray;
 import br.com.catalogo.mediacollectioncatalog.midia.video.domain.DVD;
 import br.com.catalogo.mediacollectioncatalog.midia.video.dto.dvddto.DVDRequestDTO;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +36,7 @@ public class DVDService {
     private final OwnershipService ownershipService;
 
     private final MidiaEventPublisher midiaEventPublisher;
+    private final NotificacaoMidiaEventPublisher notificacaoMidiaEventPublisher;
 
     @Transactional
     public DVDResponseDTO cadastrarDVD(DVDRequestDTO dto){
@@ -75,7 +80,28 @@ public class DVDService {
                 usuarioId
         );
 
-        // 9. Converter Entity → ResponseDTO
+        // 9. Publicar notificação de cadastro por e-mail
+        notificacaoMidiaEventPublisher.publicarNotificacao(
+                new NotificacaoCadastroMidia(
+                        authenticatedUserService.getEmail(),
+                        dvdSalvo.getTitulo(),
+                        dvdSalvo.getAnoLancamento(),
+                        "DVD",
+                        Map.of(
+                                "Título Original", dvdSalvo.getTituloOriginal(),
+                                "Diretores", dvdSalvo.getDiretores().stream()
+                                        .map(diretor -> diretor.getNome())
+                                        .collect(Collectors.joining(", ")),
+                                "Número de Discos", String.valueOf(dvdSalvo.getNumeroDiscos()),
+                                "Tipo de Edição", dvdSalvo.getTipoEdicao().name(),
+                                "Categoria", dvdSalvo.getCategoriaVideo().name(),
+                                "Gênero do Filme", dvdSalvo.getGenero().name()
+                        ),
+                        dvdSalvo.getDataCadastro()
+                )
+        );;
+
+        // 10. Converter Entity → ResponseDTO
         // O mapper transforma a entidade no retorno da API
         return mapper.toDTO(dvdSalvo);
     }
