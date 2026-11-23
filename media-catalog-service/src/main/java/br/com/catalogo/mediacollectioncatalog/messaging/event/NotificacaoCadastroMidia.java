@@ -1,6 +1,7 @@
 package br.com.catalogo.mediacollectioncatalog.messaging.event;
 
 import java.time.Instant;
+import java.util.Map;
 
 public record NotificacaoCadastroMidia(
 
@@ -8,9 +9,10 @@ public record NotificacaoCadastroMidia(
         String titulo,
         Integer anoLancamento,
         String tipoMidia,
-        String artista,
-        String formatoDisco,
-        String tipo,
+        //String artista,
+        //String formatoDisco,
+        //String tipo,
+        Map<String, String> detalhes,
         Instant dataCadastro
 ) {
 }

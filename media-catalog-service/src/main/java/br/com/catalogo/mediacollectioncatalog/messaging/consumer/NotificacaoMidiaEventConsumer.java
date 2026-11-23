@@ -23,9 +23,11 @@ public class NotificacaoMidiaEventConsumer {
         log.info("Mídia: {}", notificacao.titulo());
         log.info("Tipo de mídia: {}", notificacao.tipoMidia());
         log.info("Ano de lançamento: {}", notificacao.anoLancamento());
-        log.info("Artista: {}", notificacao.artista());
-        log.info("Formato do disco: {}", notificacao.formatoDisco());
-        log.info("Tipo: {}", notificacao.tipo());
+
+        notificacao.detalhes().forEach((chave, valor) ->
+                log.info("{}: {}", chave, valor)
+        );
+
         log.info("Data do cadastro: {}", notificacao.dataCadastro());
 
         emailService.enviarNotificacao(notificacao);

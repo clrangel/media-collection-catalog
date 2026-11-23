@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -79,9 +80,13 @@ public class CDService {
                         cdSalvo.getTitulo(),
                         cdSalvo.getAnoLancamento(),
                         "CD",
-                        cdSalvo.getArtista().getNome(),
-                        cdSalvo.getFormatoDisco().name(),
-                        cdSalvo.getTipoCD().name(),
+
+                        Map.of(
+                                "Artista", cdSalvo.getArtista().getNome(),
+                                "Formato do disco", cdSalvo.getFormatoDisco().name(),
+                                "Tipo de CD", cdSalvo.getTipoCD().name()
+                        ),
+
                         cdSalvo.getDataCadastro()
                 )
         );
