@@ -2,7 +2,9 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.event.NotificacaoCadastroMidia;
 import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.NotificacaoMidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.K7;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
@@ -21,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -34,6 +37,7 @@ public class K7Service {
     private final OwnershipService ownershipService;
 
     private final MidiaEventPublisher midiaEventPublisher;
+    private final NotificacaoMidiaEventPublisher notificacaoMidiaEventPublisher;
 
     @Transactional
     public K7ResponseDTO cadastrarK7(K7RequestDTO dto){
@@ -70,7 +74,21 @@ public class K7Service {
                 usuarioId
         );
 
-        // 9. Converter para DTO
+        // 9. Publicar notificação de cadastro por e-mail
+        notificacaoMidiaEventPublisher.publicarNotificacao(
+                new NotificacaoCadastroMidia(
+                        authenticatedUserService.getEmail(),
+                        k7Salvo.getTitulo(),
+                        k7Salvo.getAnoLancamento(),
+                        "K7",
+                        Map.of(
+                                "Artista", k7Salvo.getArtista().getNome()
+                        ),
+                        k7Salvo.getDataCadastro()
+                )
+        );
+
+        // 10. Converter para DTO
         return mapper.toDTO(k7Salvo);
     }
 
