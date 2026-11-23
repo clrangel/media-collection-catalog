@@ -99,7 +99,7 @@ public class DVDService {
                         ),
                         dvdSalvo.getDataCadastro()
                 )
-        );;
+        );
 
         // 10. Converter Entity → ResponseDTO
         // O mapper transforma a entidade no retorno da API
