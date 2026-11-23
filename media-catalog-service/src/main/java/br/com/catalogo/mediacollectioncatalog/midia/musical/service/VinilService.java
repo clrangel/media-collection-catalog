@@ -2,7 +2,9 @@ package br.com.catalogo.mediacollectioncatalog.midia.musical.service;
 
 import br.com.catalogo.mediacollectioncatalog.artista.domain.Artista;
 import br.com.catalogo.mediacollectioncatalog.artista.repository.ArtistaRepository;
+import br.com.catalogo.mediacollectioncatalog.messaging.event.NotificacaoCadastroMidia;
 import br.com.catalogo.mediacollectioncatalog.messaging.publisher.MidiaEventPublisher;
+import br.com.catalogo.mediacollectioncatalog.messaging.publisher.NotificacaoMidiaEventPublisher;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.CD;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.Faixa;
 import br.com.catalogo.mediacollectioncatalog.midia.musical.domain.MidiaMusical;
@@ -21,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -34,6 +37,7 @@ public class VinilService {
     private final OwnershipService ownershipService;
 
     private final MidiaEventPublisher midiaEventPublisher;
+    private final NotificacaoMidiaEventPublisher notificacaoMidiaEventPublisher;
 
     @Transactional
     public VinilResponseDTO cadastrarVinil(VinilRequestDTO dto){
@@ -70,7 +74,23 @@ public class VinilService {
                 usuarioId
         );
 
-        // 9. Converter para DTO
+        // 9. Publicar notificação de cadastro por e-mail
+        notificacaoMidiaEventPublisher.publicarNotificacao(
+                new NotificacaoCadastroMidia(
+                        authenticatedUserService.getEmail(),
+                        vinilSalvo.getTitulo(),
+                        vinilSalvo.getAnoLancamento(),
+                        "Vinil",
+                        Map.of(
+                                "Artista", vinilSalvo.getArtista().getNome(),
+                                "Formato do disco", vinilSalvo.getFormatoDisco().name(),
+                                "Tipo do Vinil", vinilSalvo.getTipoVinil().name()
+                        ),
+                        vinilSalvo.getDataCadastro()
+                )
+        );
+
+        // 10. Converter para DTO
         return mapper.toDTO(vinilSalvo);
     }
 

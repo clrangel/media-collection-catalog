@@ -9,9 +9,7 @@ public record NotificacaoCadastroMidia(
         String titulo,
         Integer anoLancamento,
         String tipoMidia,
-        //String artista,
-        //String formatoDisco,
-        //String tipo,
+
         Map<String, String> detalhes,
         Instant dataCadastro
 ) {
