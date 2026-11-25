@@ -13,7 +13,7 @@ Atualmente, a solução está em processo de evolução para uma arquitetura bas
 
 A solução também conta com autenticação baseada em JWT, utilizando Spring Security e OAuth2 Resource Server para proteção dos recursos do catálogo. A implementação permite identificar o usuário autenticado e associar as mídias cadastradas ao respectivo usuário, além de controlar o acesso às operações de alteração e exclusão.
 
-A arquitetura continua sendo evoluída gradualmente, com a adoção de componentes como Service Registry, API Gateway e comunicação entre serviços, buscando construir uma plataforma escalável, organizada e de fácil manutenção.
+A arquitetura continua sendo evoluída gradualmente, com a adoção de componentes como Service Registry, API Gateway e comunicação entre serviços, além da utilização de RabbitMQ para processamento assíncrono de eventos, buscando construir uma plataforma escalável, organizada e de fácil manutenção.
 
 Essa estratégia permite demonstrar não apenas a implementação de funcionalidades, mas também a capacidade de projetar, evoluir e manter sistemas distribuídos seguindo boas práticas de arquitetura de software.
 
@@ -54,8 +54,10 @@ A comunicação e a infraestrutura da arquitetura estão sendo estruturadas de f
 * **Service Registry:** responsável pelo registro e descoberta dos serviços disponíveis, utilizando Spring Cloud Netflix Eureka.
 * **API Gateway:** previsto como ponto único de entrada para as requisições da aplicação.
 * **Bancos de dados independentes:** cada microsserviço possui sua própria base de dados, garantindo maior autonomia e isolamento entre os domínios.
+* **RabbitMQ:** utilizado para comunicação assíncrona através do processamento de eventos relacionados ao cadastro de mídias.
 
 A arquitetura foi planejada de forma incremental, permitindo a inclusão de novos serviços e componentes conforme a evolução do projeto.
+
 
 ---
 
@@ -96,13 +98,13 @@ As tecnologias utilizadas no desenvolvimento do projeto foram escolhidas com foc
 * **JWT** — Autenticação baseada em tokens utilizada para identificação dos usuários entre os serviços.
 * **OpenFeign** — Comunicação síncrona entre serviços prevista para a evolução da arquitetura.
 
+### Mensageria
+
+* **RabbitMQ** — Tecnologia utilizada para comunicação assíncrona através de eventos, implementando o processamento do histórico de cadastro de mídias e o envio de notificações por e-mail.
+
 #### Tecnologias previstas para evolução da arquitetura
 
 * **API Gateway** — Componente previsto para centralizar o acesso aos microsserviços.
-
-### Mensageria
-
-* **RabbitMQ** — Tecnologia prevista para comunicação assíncrona entre os serviços através de filas de mensagens.
 
 ---
 
@@ -124,7 +126,7 @@ Evoluções e etapas do projeto:
 - [x] Implementação do Service Registry para descoberta dos serviços utilizando Eureka.
 - [ ] Implementação do API Gateway.
 - [x] Comunicação entre serviços utilizando OpenFeign.
-- [ ] Comunicação assíncrona entre serviços utilizando RabbitMQ.
+- [x] Comunicação assíncrona entre serviços utilizando RabbitMQ.
 - [ ] Containerização da aplicação utilizando Docker.
 - [ ] Orquestração dos serviços utilizando Kubernetes.
 
