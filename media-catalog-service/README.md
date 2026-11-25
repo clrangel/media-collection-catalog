@@ -26,7 +26,7 @@ Este projeto foi criado com o objetivo de praticar e demonstrar conceitos fundam
 ✔️ CRUD completo de K7s  
 
 ✔️ CRUD completo de DVDs  
-✔️CRUD completo de Blu-rays
+✔️ CRUD completo de Blu-rays
 
 ✔️ CRUD completo de Artistas  
 ✔️ CRUD completo de Diretores
@@ -238,6 +238,45 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Identificação do usuário autenticado através do JWT
 - Controle de acesso baseado no proprietário da mídia
 
+## 📨 Mensageria com RabbitMQ
+
+O projeto utiliza RabbitMQ para implementar comunicação assíncrona, permitindo processar eventos relacionados ao cadastro de mídias de forma independente do fluxo principal da aplicação.
+
+A mensageria foi implementada em dois fluxos:
+
+### 📋 Histórico de Cadastro de Mídias
+
+Após o cadastro de uma mídia, a aplicação publica um evento no RabbitMQ contendo informações sobre o cadastro. Esse evento é consumido por um componente responsável por persistir o histórico no banco de dados.
+
+- Publicação de eventos de cadastro de mídias
+- Consumo de mensagens através de uma fila dedicada
+- Persistência do histórico de cadastros no PostgreSQL
+
+### 📧 Notificações por E-mail
+
+Após o cadastro de uma mídia, a aplicação também publica um evento específico para notificação por e-mail. O evento é processado por um consumidor que utiliza o serviço de envio de e-mails para enviar uma confirmação ao usuário autenticado, contendo os detalhes da mídia cadastrada.
+
+- Publicação de eventos de notificação por e-mail
+- Fila dedicada para processamento das notificações
+- Envio de e-mails utilizando SMTP
+- Notificações com informações específicas de cada formato de mídia (CD, Vinil, K7, DVD e Blu-ray)
+
+### ⚙️ Configuração e Comunicação
+
+- Exchange do tipo Direct Exchange
+- Filas dedicadas para histórico e notificações
+- Routing Keys específicas para cada fluxo
+- Consumidores independentes para processamento dos eventos
+- Integração com RabbitMQ através do Spring AMQP
+
+### 🔧 Configuração do RabbitMQ
+
+Para o funcionamento da mensageria, é necessário configurar a conexão com uma instância RabbitMQ.
+
+O projeto utiliza uma instância RabbitMQ hospedada no CloudAMQP, responsável por disponibilizar o broker para comunicação e processamento dos eventos.
+
+As configurações de conexão devem ser definidas no arquivo `application.properties`, incluindo os dados de acesso à instância RabbitMQ.
+
 ## 🏗️ Tecnologias utilizadas
 
 - Java 21
@@ -247,6 +286,8 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Maven
 - Hibernate / JPA
 - Swagger / OpenAPI
+- RabbitMQ
+- Spring AMQP
 
 #### 🔐 Login e Autenticação
 
@@ -268,6 +309,7 @@ Além disso, o sistema aplica conceitos importantes de desenvolvimento backend:
 - Lombok
 - MapStruct
 - OpenAPI (Swagger)
+- Spring Boot Starter AMQP
 
 #### 🔐 Login e Autenticação
 
